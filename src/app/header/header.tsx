@@ -16,6 +16,7 @@ function HeaderLink({ href, children }: { href: string; children: string }) {
 }
 
 export default function Header() {
+  // TODO: make header transparent on home page, may need to make absolute
   return (
     <header className="bg-black text-white border-b border-white border-opacity-50 md:border-none">
       <div className="max-w-[1110px] mx-auto w-full">

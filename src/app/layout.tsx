@@ -19,9 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={manrope.className}>
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col justify-between min-h-screen">
           <Header />
-          <main className="flex min-h-screen flex-col items-center justify-between">
+          <main className="flex flex-col items-center justify-start">
             {children}
           </main>
           <Footer />
