@@ -3,17 +3,6 @@ import MobileImage from "/public/assets/shared/mobile/image-best-gear.jpg";
 import TabletImage from "/public/assets/shared/tablet/image-best-gear.jpg";
 import DesktopImage from "/public/assets/shared/desktop/image-best-gear.jpg";
 
-{
-  /* <picture className="absolute top-0 w-full">
-        <source media="(min-width:376px)" srcSet={DesktopBackground.src} />
-        <Image
-          src={MobileBackground}
-          alt="Background Image"
-          className="mx-auto w-full"
-        />
-      </picture> */
-}
-
 export default function AboutAudiofile() {
   return (
     <div className="text-center py-[7.5rem] px-6 mx-auto max-w-[1110px] lg:flex lg:flex-row-reverse lg:items-center lg:justify-between">
