@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, Manrope } from "next/font/google";
+import { Manrope } from "next/font/google";
 import Header from "./header/header";
+import Footer from "./footer";
 import "./globals.css";
 
 const manrope = Manrope({ subsets: ["latin"] });
@@ -18,11 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={manrope.className}>
-        <div>
+        <div className="flex flex-col justify-between">
           <Header />
-          <main className="flex min-h-screen flex-col items-center justify-between p-24">
+          <main className="flex min-h-screen flex-col items-center justify-between">
             {children}
           </main>
+          <Footer />
         </div>
       </body>
     </html>
