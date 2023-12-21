@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import AudiophileLogo from "/public/assets/shared/desktop/logo.svg";
 import HamburgerMenu from "./hamburger-menu";
 import Cart from "./cart";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 function HeaderLink({ href, children }: { href: string; children: string }) {
   return (
@@ -16,9 +20,15 @@ function HeaderLink({ href, children }: { href: string; children: string }) {
 }
 
 export default function Header() {
-  // TODO: make header transparent on home page, may need to make absolute
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   return (
-    <header className="bg-black text-white border-b border-white border-opacity-50 md:border-none">
+    <header
+      className={cn(
+        "bg-black text-white border-b border-white border-opacity-50 md:border-none",
+        isHome && "bg-opacity-90"
+      )}
+    >
       <div className="max-w-[1110px] mx-auto w-full">
         <h1 className="hidden">Audiophile</h1>
         <div className="mx-6 py-8 flex justify-between items-center md:border-white md:border-b md:border-opacity-50">
