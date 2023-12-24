@@ -32,7 +32,7 @@ export default function Banners() {
           </picture>
         </div>
 
-        <div className="mr-0 ml-auto">
+        <div className="lg:mr-0 lg:ml-auto">
           <p className="text-white uppercase pt-8 text-4xl font-bold leading-10 tracking-[0.080375em]">
             ZX9 <br /> Speaker
           </p>
