@@ -26,7 +26,7 @@ export default function Header() {
     <header
       className={cn(
         "bg-black text-white border-b border-white border-opacity-50 md:border-none z-10",
-        isHome && "bg-transparent"
+        isHome && "bg-soft-black"
       )}
     >
       <div className="max-w-[1110px] mx-auto w-full">

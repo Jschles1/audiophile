@@ -30,6 +30,7 @@ module.exports = {
       alabaster: "#FAFAFA",
       "hit-pink": "#FBAF85",
       black: "#000000",
+      "soft-black": "#191919",
       "persian-red": "#CD2C2C",
       transparent: "transparent",
     },
