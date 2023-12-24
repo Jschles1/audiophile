@@ -1,5 +1,5 @@
 import Image from "next/image";
 
 export default function Checkout() {
-  return <div>Audiophile Checkout</div>;
+  return <div className="mx-auto ">Audiophile Checkout</div>;
 }
