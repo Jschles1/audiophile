@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import CounterButton from "@/app/counter-button";
-import RelatedProductPlaceholderImage from "/public/assets/shared/desktop/image-xx99-mark-two-headphones.jpg";
 import { cn } from "@/lib/utils";
 
 const mobile_placeholder_image =
@@ -215,7 +214,7 @@ export default function ProductDetails({
           </div>
         </div>
 
-        <div className="relative h-[400px] md:basis-[60%]">
+        <div className="relative h-[400px] md:basis-[60%] lg:basis-auto lg:flex-1">
           <picture className="">
             <source media="(min-width:1025px)" srcSet={gallery.third.desktop} />
             <source media="(min-width:768px)" srcSet={gallery.third.tablet} />
