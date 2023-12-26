@@ -70,7 +70,7 @@ function RelatedProductItem({
           </div>
         </div>
       </div>
-      <p className="pb-8 text-[1.75rem] font-bold leading-[normal] tracking-[0.0625em] uppercase">
+      <p className="pb-8 text-[1.75rem] md:text-2xl font-bold leading-[normal] tracking-[0.0625em] uppercase">
         {name}
       </p>
       <Link href={`/${categoryName}/${productSlug}`}>
