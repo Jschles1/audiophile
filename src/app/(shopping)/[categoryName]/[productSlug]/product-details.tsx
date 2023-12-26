@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import CounterButton from "@/app/counter-button";
 import PlaceholderImage from "/public/assets/shared/desktop/image-xx59-headphones.jpg";
 import RelatedProductPlaceholderImage from "/public/assets/shared/desktop/image-xx99-mark-two-headphones.jpg";
+import { cn } from "@/lib/utils";
 
 const placeholder_image_gallery =
   '{"first":{"mobile":"https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/dc7f6bfd-5a79-4b84-2d9d-dee5d9d96300/public","tablet":"https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/e0bed1f9-4522-4d82-fbe4-8d903ccc8c00/public","desktop":"https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/6195f602-f747-4a6d-9358-95234cd80500/public"},"second":{"mobile":"https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/0ea8ed3a-25f2-430e-49a2-4386cc2d3600/public","tablet":"https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/d8d17025-e963-4ca7-0a19-fad88059c200/public","desktop":"https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/f94cac4c-811f-4c24-7a98-85484be9b700/public"},"third":{"mobile":"https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/c0007c19-f2a4-43a1-eb64-cc69067b2c00/public","tablet":"https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/ca617d7d-8dff-4f59-3851-28274bda6a00/public","desktop":"https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/025eb5d9-bdc1-42b4-eb87-8dd08c46d700/public"}}';
@@ -51,16 +52,23 @@ export default function ProductDetails() {
   const [addedProducts, setAddedProducts] = React.useState<number>(1);
   // const gallery = JSON.parse(imageGallery);
   const gallery = JSON.parse(placeholder_image_gallery);
+  // const isNew = product.isNew;
+  const isNew = true;
   console.log({ gallery });
   return (
     <div className="px-6 mx-auto max-w-[1110px]">
-      <div className="pb-10">
+      <div className={isNew ? "pb-8" : "pb-10"}>
         <Image
           src={PlaceholderImage}
           alt="Product name"
           className="rounded-lg w-[327px] h-[327px]"
         />
       </div>
+      {isNew && (
+        <p className="text-raw-sienna uppercase font-normal text-sm tracking-[0.625em] leading-[normal] pb-8">
+          New Product
+        </p>
+      )}
       <h1 className="uppercase text-[1.75rem] font-bold leading-[normal] tracking-[0.0625em] max-w-[55%] pb-6">
         XX59 Headphones
       </h1>
