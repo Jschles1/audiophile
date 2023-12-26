@@ -7,13 +7,13 @@ import ProductDetails from "./product-details";
 export default function ProductListingPage({
   params,
 }: {
-  params: { productSlug: string };
+  params: { categoryName: string; productSlug: string };
 }) {
-  const { productSlug } = params;
+  const { productSlug, categoryName } = params;
   return (
     <div className="w-full bg-alabaster">
       <GoBack />
-      <ProductDetails />
+      <ProductDetails categoryName={categoryName} />
       <Categories />
       <AboutAudiofile />
     </div>
