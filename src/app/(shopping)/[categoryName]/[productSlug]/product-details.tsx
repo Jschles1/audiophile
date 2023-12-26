@@ -56,7 +56,7 @@ function RelatedProductItem({
     <div className="flex flex-col items-center justify-center text-center flex-1">
       <div className="bg-seashell rounded-lg w-full mb-8">
         <div className="bg-seashell rounded-lg md:py-[3.875rem] md:px-[2.313rem]">
-          <div className="relative h-[130px] md:h-[193px] w-full">
+          <div className="relative h-[130px] md:h-[225px] w-full">
             <picture className="">
               <source media="(min-width:1025px)" srcSet={desktopImage} />
               <source media="(min-width:768px)" srcSet={tabletImage} />
