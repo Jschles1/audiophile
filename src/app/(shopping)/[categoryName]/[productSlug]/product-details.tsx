@@ -69,7 +69,7 @@ function RelatedProductItem({
           </div>
         </div>
       </div>
-      <p className="pb-8 text-[1.75rem] md:text-2xl font-bold leading-[normal] tracking-[0.0625em] uppercase">
+      <p className="pb-8 text-[1.75rem] md:text-2xl font-bold leading-[normal] tracking-[0.0625em] uppercase lg:text-2xl lg:pt-10">
         {name}
       </p>
       <Link href={`/${categoryName}/${productSlug}`}>
@@ -94,7 +94,7 @@ export default function ProductDetails({
     <div className="px-6 mx-auto max-w-[1110px]">
       <div className="md:flex md:flex-row md:items-center">
         <div className={cn("md:p-0", isNew ? "pb-8" : "pb-10")}>
-          <div className="relative h-[327px] md:h-[490px] md:w-[281px]">
+          <div className="relative h-[327px] md:h-[490px] md:w-[281px] lg:h-[560px] lg:w-[540px]">
             <picture className="">
               <source
                 media="(min-width:1025px)"
@@ -114,13 +114,13 @@ export default function ProductDetails({
           </div>
         </div>
 
-        <div className="md:py-[2.813rem] md:pl-[4.375rem]">
+        <div className="md:py-[2.813rem] md:pl-[4.375rem] lg:pl-[7.813rem]">
           {isNew && (
-            <p className="text-raw-sienna uppercase font-normal text-sm tracking-[0.625em] leading-[normal] pb-8 md:text-xs md:pb-4">
+            <p className="text-raw-sienna uppercase font-normal text-sm tracking-[0.625em] leading-[normal] pb-8 md:text-xs md:pb-4 lg:text-sm">
               New Product
             </p>
           )}
-          <h1 className="uppercase text-[1.75rem] font-bold leading-[normal] tracking-[0.0625em] max-w-[55%] pb-6 md:pb-8">
+          <h1 className="uppercase text-[1.75rem] font-bold leading-[normal] tracking-[0.0625em] max-w-[55%] pb-6 md:pb-8 lg:text-[2.5rem] lg:leading-[2.75rem] lg:pb-8">
             XX59 Headphones
           </h1>
           <p className="text-[0.938rem] text-black text-opacity-50 leading-[1.563rem] pb-6 md:pb-8">
@@ -128,7 +128,7 @@ export default function ProductDetails({
             tastes with the XX59 headphones. The stylish yet durable versatile
             wireless headset is a brilliant companion at home or on the move.
           </p>
-          <p className="font-bold text-black text-[1.125rem] tracking-[0.080375em] pb-6 md:pb-8">
+          <p className="font-bold text-black text-[1.125rem] tracking-[0.080375em] pb-6 md:pb-8 lg:pb-12">
             <span className="mr-2">$</span>
             {(1000).toLocaleString()}
           </p>
@@ -146,40 +146,42 @@ export default function ProductDetails({
         </div>
       </div>
 
-      <div className="py-[5.5rem] md:py-[7.5rem]">
-        <h2 className="uppercase text-[1.5rem] md:text-[2rem] font-bold leading-[2.25rem] tracking-[0.0535625em] pb-6 md:pb-8">
-          Features
-        </h2>
-        <p className="text-black text-opacity-50 leading-[1.563rem] text-[0.938rem]">
-          As the headphones all others are measured against, the XX99 Mark I
-          demonstrates over five decades of audio expertise, redefining the
-          critical listening experience. This pair of closed-back headphones are
-          made of industrial, aerospace-grade materials to emphasize durability
-          at a relatively light weight of 11 oz. From the handcrafted microfiber
-          ear cushions to the robust metal headband with inner damping element,
-          the components work together to deliver comfort and uncompromising
-          sound. Its closed-back design delivers up to 27 dB of passive noise
-          cancellation, reducing resonance by reflecting sound to a dedicated
-          absorber. For connectivity, a specially tuned cable is included with a
-          balanced gold connector.
-        </p>
-      </div>
+      <div className="lg:flex lg:flex-row lg:items-start lg:py-40 lg:gap-x-[7.813rem]">
+        <div className="py-[5.5rem] md:py-[7.5rem] lg:p-0 lg:max-w-[635px]">
+          <h2 className="uppercase text-[1.5rem] md:text-[2rem] font-bold leading-[2.25rem] tracking-[0.0535625em] pb-6 md:pb-8">
+            Features
+          </h2>
+          <p className="text-black text-opacity-50 leading-[1.563rem] text-[0.938rem]">
+            As the headphones all others are measured against, the XX99 Mark I
+            demonstrates over five decades of audio expertise, redefining the
+            critical listening experience. This pair of closed-back headphones
+            are made of industrial, aerospace-grade materials to emphasize
+            durability at a relatively light weight of 11 oz. From the
+            handcrafted microfiber ear cushions to the robust metal headband
+            with inner damping element, the components work together to deliver
+            comfort and uncompromising sound. Its closed-back design delivers up
+            to 27 dB of passive noise cancellation, reducing resonance by
+            reflecting sound to a dedicated absorber. For connectivity, a
+            specially tuned cable is included with a balanced gold connector.
+          </p>
+        </div>
 
-      <div className="pb-24 md:pb-[7.5rem] md:flex md:flex-row md:items-start md:justify-between md:w-[80%]">
-        <h2 className="uppercase text-[1.5rem] md:text-[2rem] font-bold leading-[2.25rem] tracking-[0.0535625em] pb-6">
-          In the box
-        </h2>
-        <div className="flex flex-col gap-y-2">
-          <ProductFeature name="Headphone Unit" quantity={1} />
-          <ProductFeature name="Replacement Earcups" quantity={2} />
-          <ProductFeature name="User Manual" quantity={1} />
-          <ProductFeature name="3.5mm 5m Audio Cable" quantity={1} />
+        <div className="pb-24 md:pb-[7.5rem] md:flex md:flex-row md:items-start md:justify-between md:w-[80%] lg:block">
+          <h2 className="uppercase text-[1.5rem] md:text-[2rem] font-bold leading-[2.25rem] tracking-[0.0535625em] pb-6">
+            In the box
+          </h2>
+          <div className="flex flex-col gap-y-2">
+            <ProductFeature name="Headphone Unit" quantity={1} />
+            <ProductFeature name="Replacement Earcups" quantity={2} />
+            <ProductFeature name="User Manual" quantity={1} />
+            <ProductFeature name="3.5mm 5m Audio Cable" quantity={1} />
+          </div>
         </div>
       </div>
 
       <div className="flex flex-col gap-y-6 md:flex-row md:gap-x-6">
         <div className="flex flex-col gap-y-6 md:basis-[30%]">
-          <div className="relative h-[188px] md:w-[300px]">
+          <div className="relative h-[188px] md:w-[300px] lg:h-[310.5px] lg:w-[375px]">
             <picture className="">
               <source
                 media="(min-width:1025px)"
@@ -194,7 +196,7 @@ export default function ProductDetails({
               />
             </picture>
           </div>
-          <div className="relative h-[188px] md:w-[300px]">
+          <div className="relative h-[188px] md:w-[300px] lg:h-[310.5px] lg:w-[375px]">
             <picture className="">
               <source
                 media="(min-width:1025px)"
@@ -214,7 +216,7 @@ export default function ProductDetails({
           </div>
         </div>
 
-        <div className="relative h-[400px] md:basis-[60%] lg:basis-auto lg:flex-1">
+        <div className="relative h-[400px] lg:h-[645px] md:basis-[60%] lg:basis-auto lg:flex-1">
           <picture className="">
             <source media="(min-width:1025px)" srcSet={gallery.third.desktop} />
             <source media="(min-width:768px)" srcSet={gallery.third.tablet} />
@@ -229,10 +231,10 @@ export default function ProductDetails({
       </div>
 
       <div className="pb-[7.5rem] py-24 md:pb-[10.75rem]">
-        <h2 className="uppercase text-[1.5rem] md:text-[2rem] text-center font-bold leading-[2.25rem] tracking-[0.0535625em] pb-10">
+        <h2 className="uppercase text-[1.5rem] md:text-[2rem] text-center font-bold leading-[2.25rem] tracking-[0.0535625em] pb-10 lg:text-[2rem]">
           You may also like
         </h2>
-        <div className="flex flex-col gap-y-14 md:flex-row md:items-center md:gap-x-[0.688rem] ">
+        <div className="flex flex-col gap-y-14 md:flex-row md:items-center md:gap-x-[0.688rem] lg:gap-x-[1.875rem]">
           <RelatedProductItem
             categoryName={categoryName}
             name="XX99 Mark I"
