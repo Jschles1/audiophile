@@ -20,7 +20,7 @@ export default function Banners() {
           <Image src={PatternCircles} alt="" />
         </div>
 
-        <div className="z-20 lg:absolute lg:left-[130px] lg:top-[36px]">
+        <div className="z-[9] lg:absolute lg:left-[130px] lg:top-[36px]">
           <picture>
             <source media="(min-width:1025px)" srcSet={DesktopZX9Image.src} />
             <source media="(min-width:768px)" srcSet={TabletZX9Image.src} />
