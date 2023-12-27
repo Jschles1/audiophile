@@ -49,20 +49,34 @@ export default function Header() {
       document.addEventListener("click", closeCartDialog);
     }
   }
+  const closeMenuDialog = React.useCallback(
+    (e: MouseEvent) => {
+      if (!menuRef.current?.contains(e.target as Node)) {
+        setIsMenuOpen(false);
+        document.removeEventListener("click", closeMenuDialog);
+      }
+    },
+    [menuRef, setIsMenuOpen]
+  );
 
-  function closeMenuDialog(e: MouseEvent) {
-    if (!menuRef.current?.contains(e.target as Node)) {
-      setIsMenuOpen(false);
+  const closeCartDialog = React.useCallback(
+    (e: MouseEvent) => {
+      if (!cartRef.current?.contains(e.target as Node)) {
+        setIsCartOpen(false);
+        document.removeEventListener("click", closeCartDialog);
+      }
+    },
+    [cartRef, setIsCartOpen]
+  );
+
+  React.useEffect(() => {
+    setIsCartOpen(false);
+    setIsMenuOpen(false);
+    return () => {
       document.removeEventListener("click", closeMenuDialog);
-    }
-  }
-
-  function closeCartDialog(e: MouseEvent) {
-    if (!cartRef.current?.contains(e.target as Node)) {
-      setIsCartOpen(false);
       document.removeEventListener("click", closeCartDialog);
-    }
-  }
+    };
+  }, [pathname, closeMenuDialog, closeCartDialog]);
 
   return (
     <header
