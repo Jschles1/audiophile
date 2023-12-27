@@ -1,3 +1,4 @@
+import * as React from "react";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
@@ -41,12 +42,18 @@ function Category({
   );
 }
 
-export default function Categories() {
+const Categories = React.forwardRef<HTMLDivElement>((_, ref) => {
   return (
-    <div className="flex max-w-[1110px] mx-auto flex-col md:flex-row w-full items-center gap-x-[0.625rem] px-6 pt-[3.25rem] gap-y-[4.25rem]">
+    <div
+      ref={ref}
+      className="flex max-w-[1110px] mx-auto flex-col md:flex-row w-full items-center gap-x-[0.625rem] px-6 pt-[3.25rem] gap-y-[4.25rem]"
+    >
       <Category name="Headphones" href="/headphones" image={HeadphonesImage} />
       <Category name="Speakers" href="/speakers" image={SpeakersImage} />
       <Category name="Earphones" href="/earphones" image={EarphonesImage} />
     </div>
   );
-}
+});
+Categories.displayName = "Categories";
+
+export default Categories;
