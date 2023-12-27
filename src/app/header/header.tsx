@@ -49,6 +49,7 @@ export default function Header() {
       document.addEventListener("click", closeCartDialog);
     }
   }
+
   const closeMenuDialog = React.useCallback(
     (e: MouseEvent) => {
       if (!menuRef.current?.contains(e.target as Node)) {
