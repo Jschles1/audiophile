@@ -4,6 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Cart from "./cart";
+import CartButtonIcon from "/public/assets/shared/desktop/icon-cart.svg";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -24,11 +25,43 @@ function HeaderLink({ href, children }: { href: string; children: string }) {
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isCartOpen, setIsCartOpen] = React.useState(false);
+  const menuRef = React.useRef<HTMLDivElement>(null);
+  const cartRef = React.useRef<HTMLDivElement>(null);
+  const isDialogOpen = isMenuOpen || isCartOpen;
   const pathname = usePathname();
   const isHome = pathname === "/";
 
   function handleMenuClick() {
-    setIsMenuOpen((prev) => !prev);
+    const newValue = !isMenuOpen;
+    setIsMenuOpen(newValue);
+    setIsCartOpen(false);
+    if (newValue) {
+      document.addEventListener("click", closeMenuDialog);
+    }
+  }
+
+  function handleCartClick() {
+    const newValue = !isCartOpen;
+    setIsCartOpen(newValue);
+    setIsMenuOpen(false);
+    if (newValue) {
+      document.addEventListener("click", closeCartDialog);
+    }
+  }
+
+  function closeMenuDialog(e: MouseEvent) {
+    if (!menuRef.current?.contains(e.target as Node)) {
+      setIsMenuOpen(false);
+      document.removeEventListener("click", closeMenuDialog);
+    }
+  }
+
+  function closeCartDialog(e: MouseEvent) {
+    if (!cartRef.current?.contains(e.target as Node)) {
+      setIsCartOpen(false);
+      document.removeEventListener("click", closeCartDialog);
+    }
   }
 
   return (
@@ -58,17 +91,29 @@ export default function Header() {
             <HeaderLink href="/speakers">Speakers</HeaderLink>
             <HeaderLink href="/earphones">Earphones</HeaderLink>
           </div>
-          <Cart />
+          <Button
+            className="relative p-0"
+            aria-label="Cart"
+            variant="ghost"
+            onClick={handleCartClick}
+          >
+            <Image src={CartButtonIcon} alt="Cart Icon" />
+          </Button>
         </div>
 
         {isMenuOpen && (
-          <div className="absolute top-[105px] bg-white w-full py-8 pb-6 rounded-b-lg z-60">
+          <div
+            className="absolute top-[105px] bg-white w-full py-8 pb-6 rounded-b-lg z-60"
+            ref={menuRef}
+          >
             <Categories />
           </div>
         )}
+
+        {isCartOpen && <Cart ref={cartRef} />}
       </div>
-      {isMenuOpen && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 -z-10" />
+      {isDialogOpen && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 -z-10 pointer-events-auto" />
       )}
     </header>
   );
