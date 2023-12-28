@@ -21,6 +21,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import CashDeliveryIcon from "/public/assets/checkout/icon-cash-on-delivery.svg";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const xx99_placeholder =
   "https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/da22de76-9f3e-4b4f-fb6c-873ae4bad600/public";
@@ -216,21 +217,43 @@ export default function Checkout() {
                     value={form.getValues("paymentMethod")}
                     className="pb-8"
                   >
-                    <div className="flex items-center space-x-2">
+                    <div
+                      className={cn(
+                        "flex items-center gap-x-4 px-4 py-[1.125rem] rounded-lg",
+                        currentPaymentMethod === "emoney" &&
+                          "border border-raw-sienna"
+                      )}
+                    >
                       <RadioGroupItem
                         value="emoney"
                         id="emoney"
                         onClick={() => handlePaymentMethodChange("emoney")}
                       />
-                      <Label htmlFor="emoney">e-Money</Label>
+                      <Label
+                        htmlFor="emoney"
+                        className="text-sm font-bold leading-[normal]"
+                      >
+                        e-Money
+                      </Label>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div
+                      className={cn(
+                        "flex items-center gap-x-4 px-4 py-[1.125rem] rounded-lg",
+                        currentPaymentMethod === "cash" &&
+                          "border border-raw-sienna"
+                      )}
+                    >
                       <RadioGroupItem
                         value="cash"
                         id="cash"
                         onClick={() => handlePaymentMethodChange("cash")}
                       />
-                      <Label htmlFor="cash">Cash on Delivery</Label>
+                      <Label
+                        htmlFor="cash"
+                        className="text-sm font-bold leading-[normal]"
+                      >
+                        Cash on Delivery
+                      </Label>
                     </div>
                   </RadioGroup>
 
