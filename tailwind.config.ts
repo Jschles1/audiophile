@@ -33,6 +33,7 @@ module.exports = {
       "soft-black": "#191919",
       "persian-red": "#CD2C2C",
       transparent: "transparent",
+      "input-border": "#CFCFCF",
     },
     extend: {
       keyframes: {
