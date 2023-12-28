@@ -2,51 +2,10 @@
 
 import * as React from "react";
 import Image from "next/image";
-import CounterButton from "../counter-button";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
-function CartItem({
-  name,
-  quantity,
-  price,
-  image,
-}: {
-  name: string;
-  quantity: number;
-  price: number;
-  image: string;
-}) {
-  return (
-    // TODO: Need to add truncated version of the product name
-    <div className="flex flex-row items-center">
-      <div>
-        <Image
-          className="rounded-lg"
-          src={image}
-          alt={name}
-          height={64}
-          width={64}
-        />
-      </div>
-
-      <div className="pl-4 flex-1">
-        <p className="text-black text-[0.938rem] leading-[1.563rem]">{name}</p>
-        <p className="text-black text-opacity-50 text-sm leading-[1.563rem]">
-          ${price.toLocaleString()}
-        </p>
-      </div>
-
-      <CounterButton
-        variant="cart"
-        className="w-[96px]"
-        onIncrement={() => {}}
-        onDecrement={() => {}}
-        value={quantity}
-      />
-    </div>
-  );
-}
+import CounterButton from "../counter-button";
+import CartItem from "../cart-item";
+import { Button } from "@/components/ui/button";
 
 const xx99_placeholder =
   "https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/da22de76-9f3e-4b4f-fb6c-873ae4bad600/public";
@@ -76,6 +35,7 @@ const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
       </div>
       <div className="flex flex-col py-8 gap-y-6">
         <CartItem
+          variant="cart"
           name="XX99 Mark II"
           quantity={1}
           price={2999}
@@ -83,13 +43,20 @@ const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
         />
 
         <CartItem
+          variant="cart"
           name="XX59"
           quantity={1}
           price={899}
           image={xx59_placeholder}
         />
 
-        <CartItem name="YX1" quantity={1} price={599} image={yx1_placeholder} />
+        <CartItem
+          name="YX1"
+          quantity={1}
+          price={599}
+          image={yx1_placeholder}
+          variant="cart"
+        />
       </div>
       <div className="pb-6 flex flex-row item-center justify-between">
         <p className="text-black text-opacity-50 uppercase text-[0.938rem] leading-[1.563rem]">
