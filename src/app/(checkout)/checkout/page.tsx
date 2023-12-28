@@ -104,6 +104,10 @@ export default function Checkout() {
         });
       }
     }
+
+    if (currentPaymentMethod === "cash") {
+      form.clearErrors(["emoneyNumber", "pin"]);
+    }
   }, [form.formState.isSubmitted, currentPaymentMethod, form]);
 
   return (
