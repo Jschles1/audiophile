@@ -10,7 +10,6 @@ import CartItem from "@/app/cart-item";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
