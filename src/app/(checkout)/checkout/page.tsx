@@ -1,9 +1,21 @@
 "use client";
 
 import * as React from "react";
+import * as z from "zod";
 import Image from "next/image";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import GoBack from "@/app/go-back";
 import CartItem from "@/app/cart-item";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -25,10 +37,51 @@ function SectionHeader({ children }: { children: React.ReactNode }) {
   );
 }
 
+const formSchema = z.object({
+  name: z.string().min(2).max(50),
+  email: z.string().email(),
+  phone: z.string().min(10).max(15),
+  address: z.string().min(2).max(50),
+  zip: z.string().min(5).max(10),
+  city: z.string().min(2).max(50),
+  country: z.string().min(2).max(50),
+  paymentMethod: z.enum(["emoney", "cash"]),
+  emoneyNumber: z.string().optional(),
+  pin: z.string().optional(),
+});
+
 export default function Checkout() {
-  const [paymentMethod, setPaymentMethod] = React.useState<"emoney" | "cash">(
-    "emoney"
-  );
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+      zip: "",
+      city: "",
+      country: "",
+      paymentMethod: "emoney",
+      emoneyNumber: "",
+      pin: "",
+    },
+  });
+
+  const currentPaymentMethod = form.watch("paymentMethod");
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    if (currentPaymentMethod === "emoney") {
+      // Validate the emoneyNumber and pin.
+    }
+    console.log(values);
+  }
+
+  function handlePaymentMethodChange(value: string) {
+    form.setValue("paymentMethod", value as "emoney" | "cash");
+  }
+
   return (
     <div className="w-full bg-alabaster">
       <GoBack />
@@ -37,101 +90,209 @@ export default function Checkout() {
           <h1 className="uppercase text-[1.75rem] tracking-[0.0625em] font-bold pb-8">
             Checkout
           </h1>
-          <div className="pb-8">
-            <SectionHeader>Billing Details</SectionHeader>
-            <div className="flex flex-col gap-y-6">
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="name">Name</Label>
-                <Input type="text" id="name" placeholder="Name" />
-              </div>
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="email">Email Address</Label>
-                <Input type="text" id="email" placeholder="Email Address" />
-              </div>
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input type="text" id="phone" placeholder="Phone Number" />
-              </div>
-            </div>
-          </div>
-          <div className="pb-8">
-            <SectionHeader>Shipping Info</SectionHeader>
-            <div className="flex flex-col gap-y-6">
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="address">Your Address</Label>
-                <Input type="text" id="address" placeholder="Your Address" />
-              </div>
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="zip">Zip Code</Label>
-                <Input type="text" id="zip" placeholder="Zip Code" />
-              </div>
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="city">City</Label>
-                <Input type="text" id="city" placeholder="City" />
-              </div>
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="country">Country</Label>
-                <Input type="text" id="country" placeholder="Country" />
-              </div>
-            </div>
-          </div>
-          <div className="pb-8">
-            <SectionHeader>Payment Details</SectionHeader>
-            <div>
-              <p className="font-bold tracking-[-0.013375em] text-[0.75rem] pb-4">
-                Payment Method
-              </p>
-              <RadioGroup
-                defaultValue={paymentMethod}
-                value={paymentMethod}
-                className="pb-8"
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem
-                    value="emoney"
-                    id="emoney"
-                    onClick={() => setPaymentMethod("emoney")}
-                  />
-                  <Label htmlFor="emoney">e-Money</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem
-                    value="cash"
-                    id="cash"
-                    onClick={() => setPaymentMethod("cash")}
-                  />
-                  <Label htmlFor="cash">Cash on Delivery</Label>
-                </div>
-              </RadioGroup>
-              {paymentMethod === "emoney" && (
+
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="pb-8">
+                <SectionHeader>Billing Details</SectionHeader>
                 <div className="flex flex-col gap-y-6">
-                  <div className="grid w-full max-w-sm items-center gap-1.5">
-                    <Label htmlFor="emoney-number">e-Money Number</Label>
-                    <Input
-                      type="text"
-                      id="emoney-number"
-                      placeholder="238521993"
-                    />
-                  </div>
-                  <div className="grid w-full max-w-sm items-center gap-1.5">
-                    <Label htmlFor="pin">e-Money PIN</Label>
-                    <Input type="text" id="pin" placeholder="6891" />
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Name" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email Address</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Email Address" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone Number</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            placeholder="Phone Number"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
-              )}
-              {paymentMethod === "cash" && (
+              </div>
+
+              <div className="pb-8">
+                <SectionHeader>Shipping Info</SectionHeader>
                 <div className="flex flex-col gap-y-6">
-                  <Image src={CashDeliveryIcon} className="mx-auto" alt="" />
-                  <p className="text-[0.938rem] leading-[1.563rem] text-black text-opacity-50 text-center">
-                    The &apos;Cash on Delivery&apos; option enables you to pay
-                    in cash when our delivery courier arrives at your residence.
-                    Just make sure your address is correct so that your order
-                    will not be cancelled.
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Shipping Address</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Shipping Address" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="zip"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>ZIP Code</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            maxLength={10}
+                            placeholder="Zip Code"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>City</FormLabel>
+                        <FormControl>
+                          <Input placeholder="City" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="country"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Country</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Country" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              <div className="pb-8">
+                <SectionHeader>Payment Details</SectionHeader>
+                <div>
+                  <p className="font-bold tracking-[-0.013375em] text-[0.75rem] pb-4">
+                    Payment Method
                   </p>
+                  <RadioGroup
+                    defaultValue={"emoney"}
+                    value={form.getValues("paymentMethod")}
+                    className="pb-8"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem
+                        value="emoney"
+                        id="emoney"
+                        onClick={() => handlePaymentMethodChange("emoney")}
+                      />
+                      <Label htmlFor="emoney">e-Money</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem
+                        value="cash"
+                        id="cash"
+                        onClick={() => handlePaymentMethodChange("cash")}
+                      />
+                      <Label htmlFor="cash">Cash on Delivery</Label>
+                    </div>
+                  </RadioGroup>
+
+                  {currentPaymentMethod === "emoney" && (
+                    <div className="flex flex-col gap-y-6">
+                      <FormField
+                        control={form.control}
+                        name="emoneyNumber"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>e-Money Number</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder="238521993"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="pin"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>e-Money Number</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                maxLength={4}
+                                placeholder="6981"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+
+                  {currentPaymentMethod === "cash" && (
+                    <div className="flex flex-col gap-y-6">
+                      <Image
+                        src={CashDeliveryIcon}
+                        className="mx-auto"
+                        alt=""
+                      />
+                      <p className="text-[0.938rem] leading-[1.563rem] text-black text-opacity-50 text-center">
+                        The &apos;Cash on Delivery&apos; option enables you to
+                        pay in cash when our delivery courier arrives at your
+                        residence. Just make sure your address is correct so
+                        that your order will not be cancelled.
+                      </p>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </div>
+              </div>
+            </form>
+          </Form>
         </div>
 
         <div className="bg-white p-6 mx-6 rounded-lg mb-[6.125rem]">
