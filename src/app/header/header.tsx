@@ -86,7 +86,7 @@ export default function Header() {
         isHome && "bg-soft-black"
       )}
     >
-      <div className="max-w-[1110px] mx-auto w-full">
+      <div className="max-w-[1110px] mx-auto w-full relative">
         <h1 className="hidden">Audiophile</h1>
         <div className="mx-6 py-8 flex justify-between items-center md:border-white md:border-b md:border-opacity-50">
           <Button

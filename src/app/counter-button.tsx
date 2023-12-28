@@ -19,13 +19,16 @@ const CounterButton = React.forwardRef<HTMLDivElement, CounterButtonProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex flex-row items-center bg-seashell", className)}
+        className={cn(
+          "flex flex-row items-center justify-between bg-seashell",
+          className
+        )}
       >
         <Button
           className={cn(
-            "bg-seashell",
-            isPdpVariant &&
-              "pl-4 pr-5 text-[0.813rem] font-bold leading-[normal] tracking-[0.080375em]"
+            "bg-seashell text-black text-opacity-25 text-[0.813rem] font-bold leading-[normal] tracking-[0.080375em]",
+            isPdpVariant && "pl-4 pr-5",
+            isCartVariant && "px-[0.75rem]"
           )}
           variant="ghost"
           disabled={value === 0}
@@ -35,18 +38,17 @@ const CounterButton = React.forwardRef<HTMLDivElement, CounterButtonProps>(
         </Button>
         <div
           className={cn(
-            "text-black",
-            isPdpVariant &&
-              "text-[0.813rem] font-bold leading-[normal] tracking-[0.080375em]"
+            "text-black font-bold leading-[normal] tracking-[0.080375em] text-[0.813rem]",
+            isPdpVariant && " "
           )}
         >
           {value}
         </div>
         <Button
           className={cn(
-            "bg-seashell",
-            isPdpVariant &&
-              "pr-4 pl-5 text-[0.813rem] font-bold leading-[normal] tracking-[0.080375em]"
+            "bg-seashell text-black text-opacity-25 text-[0.813rem] font-bold leading-[normal] tracking-[0.080375em]",
+            isPdpVariant && "pr-4 pl-5",
+            isCartVariant && "px-[0.75rem]"
           )}
           variant="ghost"
           onClick={onIncrement}
