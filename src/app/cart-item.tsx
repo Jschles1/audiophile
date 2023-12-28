@@ -36,13 +36,21 @@ export default function CartItem({
         </p>
       </div>
 
-      <CounterButton
-        variant="cart"
-        className="w-[96px]"
-        onIncrement={() => {}}
-        onDecrement={() => {}}
-        value={quantity}
-      />
+      {variant === "cart" && (
+        <CounterButton
+          variant="cart"
+          className="w-[96px]"
+          onIncrement={() => {}}
+          onDecrement={() => {}}
+          value={quantity}
+        />
+      )}
+
+      {variant === "checkout" && (
+        <p className="text-black text-[0.938rem] leading-[1.563rem] text-opacity-50">
+          x{quantity}
+        </p>
+      )}
     </div>
   );
 }
