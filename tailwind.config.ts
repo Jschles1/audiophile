@@ -34,6 +34,7 @@ module.exports = {
       "persian-red": "#CD2C2C",
       transparent: "transparent",
       "input-border": "#CFCFCF",
+      red: "#CD2C2C",
     },
     extend: {
       keyframes: {
