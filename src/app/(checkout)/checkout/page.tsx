@@ -37,7 +37,7 @@ function SectionHeader({ children }: { children: React.ReactNode }) {
   );
 }
 
-const formSchema = z.object({
+const baseSchema = z.object({
   name: z.string().min(1, { message: "Required Field" }),
   email: z.string().email({ message: "Invalid Email" }),
   phone: z
@@ -51,10 +51,21 @@ const formSchema = z.object({
     .max(10, { message: "Invalid ZIP" }),
   city: z.string().min(1, { message: "Required Field" }),
   country: z.string().min(1, { message: "Required Field" }),
-  paymentMethod: z.enum(["emoney", "cash"]),
+});
+
+const emoneySchema = baseSchema.extend({
+  paymentMethod: z.literal("emoney"),
+  emoneyNumber: z.string().min(1, { message: "Required for e-money payment" }),
+  pin: z.string().min(1, { message: "Required for e-money payment" }),
+});
+
+const cashSchema = baseSchema.extend({
+  paymentMethod: z.literal("cash"),
   emoneyNumber: z.string().optional(),
   pin: z.string().optional(),
 });
+
+const formSchema = z.union([emoneySchema, cashSchema]);
 
 export default function Checkout() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -86,24 +97,8 @@ export default function Checkout() {
     form.setValue("paymentMethod", value as "emoney" | "cash");
   }
 
-  // Set errors manually for e-money fields, only if emoney is selected.
+  // Clear errors when switching payment methods
   React.useEffect(() => {
-    if (currentPaymentMethod === "emoney" && form.formState.isSubmitted) {
-      if (!form.getValues("emoneyNumber")) {
-        form.setError("emoneyNumber", {
-          type: "manual",
-          message: "Required Field",
-        });
-      }
-
-      if (!form.getValues("pin")) {
-        form.setError("pin", {
-          type: "manual",
-          message: "Required Field",
-        });
-      }
-    }
-
     if (currentPaymentMethod === "cash") {
       form.clearErrors(["emoneyNumber", "pin"]);
     }
