@@ -112,8 +112,8 @@ export default function Checkout() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="mx-auto max-w-[1110px]"
         >
-          <div>
-            <div className="bg-white p-6 mx-6 rounded-lg mb-8">
+          <div className="lg:flex lg:flex-row lg:items-start lg:gap-x-[1.875rem]">
+            <div className="bg-white p-6 mx-6 rounded-lg mb-8 lg:mr-0 lg:flex-1">
               <h1 className="uppercase text-[1.75rem] tracking-[0.0625em] font-bold pb-8">
                 Checkout
               </h1>
@@ -385,7 +385,7 @@ export default function Checkout() {
               </div>
             </div>
 
-            <div className="bg-white p-6 mx-6 rounded-lg mb-[6.125rem]">
+            <div className="bg-white p-6 mx-6 rounded-lg mb-[6.125rem] lg:m-0 lg:w-[350px]">
               <p className="text-black font-bold text-lg tracking-[0.080375em] leading-[normal] uppercase">
                 Summary
               </p>
