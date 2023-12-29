@@ -3,9 +3,22 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import CounterButton from "@/app/counter-button";
 import { cn } from "@/lib/utils";
+import ConfirmationIcon from "/public/assets/checkout/icon-order-confirmation.svg";
+import CartItem from "@/app/cart-item";
 
 const mobile_placeholder_image =
   "https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/ff2d3b3a-b435-4f46-9764-2ffb3d1e2600/public";
@@ -38,7 +51,6 @@ function ProductFeature({
 function RelatedProductItem({
   name,
   mobileImage,
-
   desktopImage,
   tabletImage,
   productSlug,
@@ -85,11 +97,26 @@ export default function ProductDetails({
   categoryName: string;
 }) {
   const [addedProducts, setAddedProducts] = React.useState<number>(1);
+  // State property to mimic API request pending state
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isProductAdded, setIsProductAdded] = React.useState<boolean>(false);
   // const gallery = JSON.parse(imageGallery);
   const gallery = JSON.parse(placeholder_image_gallery);
   // const isNew = product.isNew;
   const isNew = true;
   // const isNew = false;
+
+  async function handleAddToCart() {
+    setIsLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsLoading(false);
+    setIsProductAdded(true);
+  }
+
+  function closeConfirmationDialog() {
+    if (isProductAdded) setIsProductAdded(false);
+  }
+
   return (
     <div className="px-6 mx-auto max-w-[1110px]">
       <div className="md:flex md:flex-row md:items-center">
@@ -139,9 +166,56 @@ export default function ProductDetails({
               onDecrement={() => setAddedProducts((prev) => prev - 1)}
               value={addedProducts}
             />
-            <Button variant="default" disabled={addedProducts === 0}>
-              Add to Cart
-            </Button>
+            <Dialog
+              open={isProductAdded}
+              onOpenChange={closeConfirmationDialog}
+            >
+              <DialogTrigger asChild>
+                <Button
+                  variant="default"
+                  className="min-w-[157px]"
+                  disabled={addedProducts === 0 || isLoading}
+                  onClick={handleAddToCart}
+                >
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    "Add to Cart"
+                  )}
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <Image src={ConfirmationIcon} alt="" />
+                  <DialogTitle>Added to Your Cart</DialogTitle>
+                  <DialogDescription>
+                    <div className="rounded-lg bg-seashell p-6">
+                      <CartItem
+                        name="XX59"
+                        quantity={1}
+                        price={1000}
+                        image={mobile_placeholder_image}
+                        variant="checkout"
+                      />
+                    </div>
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="flex flex-col">
+                  <DialogClose asChild>
+                    <Button variant="black" className="w-full">
+                      Continue Shopping
+                    </Button>
+                  </DialogClose>
+                  <DialogClose asChild>
+                    <Link href="/checkout">
+                      <Button variant="default" className="w-full">
+                        Checkout
+                      </Button>
+                    </Link>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </div>
