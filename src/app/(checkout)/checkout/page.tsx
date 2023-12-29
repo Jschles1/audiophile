@@ -108,346 +108,355 @@ export default function Checkout() {
     <div className="w-full bg-alabaster">
       <GoBack />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="bg-white p-6 mx-6 rounded-lg mb-8">
-            <h1 className="uppercase text-[1.75rem] tracking-[0.0625em] font-bold pb-8">
-              Checkout
-            </h1>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="mx-auto max-w-[1110px]"
+        >
+          <div>
+            <div className="bg-white p-6 mx-6 rounded-lg mb-8">
+              <h1 className="uppercase text-[1.75rem] tracking-[0.0625em] font-bold pb-8">
+                Checkout
+              </h1>
 
-            <div className="pb-8">
-              <SectionHeader>Billing Details</SectionHeader>
-              <div className="flex flex-col gap-y-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="w-full flex items-center justify-between">
-                        <FormLabel>Name</FormLabel>
-                        <FormMessage />
-                      </div>
+              <div className="pb-8">
+                <SectionHeader>Billing Details</SectionHeader>
+                <div className="flex flex-col gap-y-6 md:flex-row md:flex-wrap md:gap-x-4">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem className="md:basis-[48%]">
+                        <div className="w-full flex items-center justify-between">
+                          <FormLabel>Name</FormLabel>
+                          <FormMessage />
+                        </div>
 
-                      <FormControl>
-                        <Input
-                          placeholder="Name"
-                          error={errors?.name?.message}
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="w-full flex items-center justify-between">
-                        <FormLabel>Email Address</FormLabel>
-                        <FormMessage />
-                      </div>
-                      <FormControl>
-                        <Input
-                          placeholder="Email Address"
-                          error={errors?.email?.message}
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="w-full flex items-center justify-between">
-                        <FormLabel>Phone Number</FormLabel>
-                        <FormMessage />
-                      </div>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="Phone Number"
-                          error={errors?.phone?.message}
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
-            <div className="pb-8">
-              <SectionHeader>Shipping Info</SectionHeader>
-              <div className="flex flex-col gap-y-6">
-                <FormField
-                  control={form.control}
-                  name="address"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="w-full flex items-center justify-between">
-                        <FormLabel>Shipping Address</FormLabel>
-                        <FormMessage />
-                      </div>
-                      <FormControl>
-                        <Input
-                          placeholder="Shipping Address"
-                          error={errors?.address?.message}
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="zip"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="w-full flex items-center justify-between">
-                        <FormLabel>ZIP Code</FormLabel>
-                        <FormMessage />
-                      </div>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          maxLength={10}
-                          placeholder="Zip Code"
-                          error={errors?.zip?.message}
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="city"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="w-full flex items-center justify-between">
-                        <FormLabel>City</FormLabel>
-                        <FormMessage />
-                      </div>
-                      <FormControl>
-                        <Input
-                          placeholder="City"
-                          error={errors?.city?.message}
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="country"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="w-full flex items-center justify-between">
-                        <FormLabel>Country</FormLabel>
-                        <FormMessage />
-                      </div>
-                      <FormControl>
-                        <Input
-                          placeholder="Country"
-                          error={errors?.country?.message}
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
-            <div className="pb-8">
-              <SectionHeader>Payment Details</SectionHeader>
-              <div>
-                <p className="font-bold tracking-[-0.013375em] text-[0.75rem] pb-4">
-                  Payment Method
-                </p>
-                <RadioGroup
-                  defaultValue={"emoney"}
-                  value={form.getValues("paymentMethod")}
-                  className="pb-8"
-                >
-                  <div
-                    className={cn(
-                      "flex items-center gap-x-4 px-4 py-[1.125rem] rounded-lg",
-                      currentPaymentMethod === "emoney" &&
-                        "border border-raw-sienna"
+                        <FormControl>
+                          <Input
+                            placeholder="Name"
+                            error={errors?.name?.message}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
                     )}
-                  >
-                    <RadioGroupItem
-                      value="emoney"
-                      id="emoney"
-                      onClick={() => handlePaymentMethodChange("emoney")}
-                    />
-                    <Label
-                      htmlFor="emoney"
-                      className="text-sm font-bold leading-[normal]"
-                    >
-                      e-Money
-                    </Label>
-                  </div>
-                  <div
-                    className={cn(
-                      "flex items-center gap-x-4 px-4 py-[1.125rem] rounded-lg",
-                      currentPaymentMethod === "cash" &&
-                        "border border-raw-sienna"
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem className="md:basis-[48%]">
+                        <div className="w-full flex items-center justify-between">
+                          <FormLabel>Email Address</FormLabel>
+                          <FormMessage />
+                        </div>
+                        <FormControl>
+                          <Input
+                            placeholder="Email Address"
+                            error={errors?.email?.message}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
                     )}
-                  >
-                    <RadioGroupItem
-                      value="cash"
-                      id="cash"
-                      onClick={() => handlePaymentMethodChange("cash")}
-                    />
-                    <Label
-                      htmlFor="cash"
-                      className="text-sm font-bold leading-[normal]"
-                    >
-                      Cash on Delivery
-                    </Label>
-                  </div>
-                </RadioGroup>
+                  />
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem className="md:basis-[48%]">
+                        <div className="w-full flex items-center justify-between">
+                          <FormLabel>Phone Number</FormLabel>
+                          <FormMessage />
+                        </div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            placeholder="Phone Number"
+                            error={errors?.phone?.message}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
 
-                {currentPaymentMethod === "emoney" && (
-                  <div className="flex flex-col gap-y-6">
-                    <FormField
-                      control={form.control}
-                      name="emoneyNumber"
-                      render={({ field }) => (
-                        <FormItem>
-                          <div className="w-full flex items-center justify-between">
-                            <FormLabel>e-Money Number</FormLabel>
-                            <FormMessage />
-                          </div>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="238521993"
-                              error={errors?.emoneyNumber?.message}
-                              {...field}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="pin"
-                      render={({ field }) => (
-                        <FormItem>
-                          <div className="w-full flex items-center justify-between">
-                            <FormLabel>e-Money PIN</FormLabel>
-                            <FormMessage />
-                          </div>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              maxLength={4}
-                              placeholder="6981"
-                              error={errors?.pin?.message}
-                              {...field}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
+              <div className="pb-8">
+                <SectionHeader>Shipping Info</SectionHeader>
+                <div className="flex flex-col gap-y-6 md:flex-row md:flex-wrap md:gap-x-4">
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <div className="w-full flex items-center justify-between">
+                          <FormLabel>Your Address</FormLabel>
+                          <FormMessage />
+                        </div>
+                        <FormControl>
+                          <Input
+                            placeholder="Your Address"
+                            error={errors?.address?.message}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="zip"
+                    render={({ field }) => (
+                      <FormItem className="md:basis-[48%]">
+                        <div className="w-full flex items-center justify-between">
+                          <FormLabel>ZIP Code</FormLabel>
+                          <FormMessage />
+                        </div>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            maxLength={10}
+                            placeholder="Zip Code"
+                            error={errors?.zip?.message}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem className="md:basis-[48%]">
+                        <div className="w-full flex items-center justify-between">
+                          <FormLabel>City</FormLabel>
+                          <FormMessage />
+                        </div>
+                        <FormControl>
+                          <Input
+                            placeholder="City"
+                            error={errors?.city?.message}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="country"
+                    render={({ field }) => (
+                      <FormItem className="md:basis-[48%]">
+                        <div className="w-full flex items-center justify-between">
+                          <FormLabel>Country</FormLabel>
+                          <FormMessage />
+                        </div>
+                        <FormControl>
+                          <Input
+                            placeholder="Country"
+                            error={errors?.country?.message}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
 
-                {currentPaymentMethod === "cash" && (
-                  <div className="flex flex-col gap-y-6">
-                    <Image src={CashDeliveryIcon} className="mx-auto" alt="" />
-                    <p className="text-[0.938rem] leading-[1.563rem] text-black text-opacity-50 text-center">
-                      The &apos;Cash on Delivery&apos; option enables you to pay
-                      in cash when our delivery courier arrives at your
-                      residence. Just make sure your address is correct so that
-                      your order will not be cancelled.
+              <div className="pb-8">
+                <SectionHeader>Payment Details</SectionHeader>
+                <div>
+                  <div className="md:flex md:flex-row md:items-start mg:gap-x-6">
+                    <p className="font-bold tracking-[-0.013375em] text-[0.75rem] pb-4 md:basis-[48%]">
+                      Payment Method
                     </p>
+                    <RadioGroup
+                      defaultValue={"emoney"}
+                      value={form.getValues("paymentMethod")}
+                      className="pb-8 md:flex-1 md:pl-4"
+                    >
+                      <div
+                        className={cn(
+                          "flex items-center gap-x-4 px-4 py-[1.125rem] rounded-lg",
+                          currentPaymentMethod === "emoney" &&
+                            "border border-raw-sienna"
+                        )}
+                      >
+                        <RadioGroupItem
+                          value="emoney"
+                          id="emoney"
+                          onClick={() => handlePaymentMethodChange("emoney")}
+                        />
+                        <Label
+                          htmlFor="emoney"
+                          className="text-sm font-bold leading-[normal]"
+                        >
+                          e-Money
+                        </Label>
+                      </div>
+                      <div
+                        className={cn(
+                          "flex items-center gap-x-4 px-4 py-[1.125rem] rounded-lg",
+                          currentPaymentMethod === "cash" &&
+                            "border border-raw-sienna"
+                        )}
+                      >
+                        <RadioGroupItem
+                          value="cash"
+                          id="cash"
+                          onClick={() => handlePaymentMethodChange("cash")}
+                        />
+                        <Label
+                          htmlFor="cash"
+                          className="text-sm font-bold leading-[normal]"
+                        >
+                          Cash on Delivery
+                        </Label>
+                      </div>
+                    </RadioGroup>
                   </div>
-                )}
+
+                  {currentPaymentMethod === "emoney" && (
+                    <div className="flex flex-col gap-y-6 md:flex-row md:flex-wrap md:gap-x-4">
+                      <FormField
+                        control={form.control}
+                        name="emoneyNumber"
+                        render={({ field }) => (
+                          <FormItem className="md:basis-[48%]">
+                            <div className="w-full flex items-center justify-between">
+                              <FormLabel>e-Money Number</FormLabel>
+                              <FormMessage />
+                            </div>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder="238521993"
+                                error={errors?.emoneyNumber?.message}
+                                {...field}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="pin"
+                        render={({ field }) => (
+                          <FormItem className="md:basis-[48%]">
+                            <div className="w-full flex items-center justify-between">
+                              <FormLabel>e-Money PIN</FormLabel>
+                              <FormMessage />
+                            </div>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                maxLength={4}
+                                placeholder="6981"
+                                error={errors?.pin?.message}
+                                {...field}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+
+                  {currentPaymentMethod === "cash" && (
+                    <div className="flex flex-col gap-y-6">
+                      <Image
+                        src={CashDeliveryIcon}
+                        className="mx-auto"
+                        alt=""
+                      />
+                      <p className="text-[0.938rem] leading-[1.563rem] text-black text-opacity-50 text-center">
+                        The &apos;Cash on Delivery&apos; option enables you to
+                        pay in cash when our delivery courier arrives at your
+                        residence. Just make sure your address is correct so
+                        that your order will not be cancelled.
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-            {/* </form>
-          </Form> */}
-          </div>
 
-          <div className="bg-white p-6 mx-6 rounded-lg mb-[6.125rem]">
-            <p className="text-black font-bold text-lg tracking-[0.080375em] leading-[normal] uppercase">
-              Summary
-            </p>
-            <div className="flex flex-col py-8 gap-y-6">
-              <CartItem
-                variant="checkout"
-                name="XX99 Mark II"
-                quantity={1}
-                price={2999}
-                image={xx99_placeholder}
-              />
-
-              <CartItem
-                variant="checkout"
-                name="XX59"
-                quantity={1}
-                price={899}
-                image={xx59_placeholder}
-              />
-
-              <CartItem
-                name="YX1"
-                quantity={1}
-                price={599}
-                image={yx1_placeholder}
-                variant="checkout"
-              />
-            </div>
-
-            <div className="flex flex-col gap-y-2">
-              <div className="flex flex-row item-center justify-between">
-                <p className="text-black text-opacity-50 uppercase text-[0.938rem] leading-[1.563rem]">
-                  Total
-                </p>
-                <p className="text-black font-bold text-lg leading-[normal]">
-                  ${(5396).toLocaleString()}
-                </p>
-              </div>
-
-              <div className="flex flex-row item-center justify-between">
-                <p className="text-black text-opacity-50 uppercase text-[0.938rem] leading-[1.563rem]">
-                  Shipping
-                </p>
-                <p className="text-black font-bold text-lg leading-[normal]">
-                  ${(50).toLocaleString()}
-                </p>
-              </div>
-
-              <div className="flex flex-row item-center justify-between">
-                <p className="text-black text-opacity-50 uppercase text-[0.938rem] leading-[1.563rem]">
-                  VAT (Included)
-                </p>
-                <p className="text-black font-bold text-lg leading-[normal]">
-                  ${(1079).toLocaleString()}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-row item-center justify-between pt-4 pb-8">
-              <p className="text-black text-opacity-50 uppercase text-[0.938rem] leading-[1.563rem]">
-                Grand Total
+            <div className="bg-white p-6 mx-6 rounded-lg mb-[6.125rem]">
+              <p className="text-black font-bold text-lg tracking-[0.080375em] leading-[normal] uppercase">
+                Summary
               </p>
-              <p className="font-bold text-lg leading-[normal] text-raw-sienna">
-                ${(5446).toLocaleString()}
-              </p>
-            </div>
+              <div className="flex flex-col py-8 gap-y-6">
+                <CartItem
+                  variant="checkout"
+                  name="XX99 Mark II"
+                  quantity={1}
+                  price={2999}
+                  image={xx99_placeholder}
+                />
 
-            <Button variant="default" type="submit" className="w-full">
-              Continue & Pay
-            </Button>
+                <CartItem
+                  variant="checkout"
+                  name="XX59"
+                  quantity={1}
+                  price={899}
+                  image={xx59_placeholder}
+                />
+
+                <CartItem
+                  name="YX1"
+                  quantity={1}
+                  price={599}
+                  image={yx1_placeholder}
+                  variant="checkout"
+                />
+              </div>
+
+              <div className="flex flex-col gap-y-2">
+                <div className="flex flex-row item-center justify-between">
+                  <p className="text-black text-opacity-50 uppercase text-[0.938rem] leading-[1.563rem]">
+                    Total
+                  </p>
+                  <p className="text-black font-bold text-lg leading-[normal]">
+                    ${(5396).toLocaleString()}
+                  </p>
+                </div>
+
+                <div className="flex flex-row item-center justify-between">
+                  <p className="text-black text-opacity-50 uppercase text-[0.938rem] leading-[1.563rem]">
+                    Shipping
+                  </p>
+                  <p className="text-black font-bold text-lg leading-[normal]">
+                    ${(50).toLocaleString()}
+                  </p>
+                </div>
+
+                <div className="flex flex-row item-center justify-between">
+                  <p className="text-black text-opacity-50 uppercase text-[0.938rem] leading-[1.563rem]">
+                    VAT (Included)
+                  </p>
+                  <p className="text-black font-bold text-lg leading-[normal]">
+                    ${(1079).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-row item-center justify-between pt-4 pb-8">
+                <p className="text-black text-opacity-50 uppercase text-[0.938rem] leading-[1.563rem]">
+                  Grand Total
+                </p>
+                <p className="font-bold text-lg leading-[normal] text-raw-sienna">
+                  ${(5446).toLocaleString()}
+                </p>
+              </div>
+
+              <Button variant="default" type="submit" className="w-full">
+                Continue & Pay
+              </Button>
+            </div>
           </div>
         </form>
       </Form>
