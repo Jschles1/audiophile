@@ -6,6 +6,7 @@ import Link from "next/link";
 import Cart from "./cart";
 import CartButtonIcon from "/public/assets/shared/desktop/icon-cart.svg";
 import { usePathname } from "next/navigation";
+import CartItemCount from "./cart-item-count";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import AudiophileLogo from "/public/assets/shared/desktop/logo.svg";
@@ -112,6 +113,7 @@ export default function Header() {
             onClick={handleCartClick}
           >
             <Image src={CartButtonIcon} alt="Cart Icon" />
+            <CartItemCount />
           </Button>
         </div>
 
