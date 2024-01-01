@@ -13,7 +13,7 @@ model Category {
   mobileCategoryImage  String
   tabletCategoryImage  String
   desktopCategoryImage String
-  Product              Product[]
+  Product              Product[] @relation("CategoryToProduct")
 }
 
 model Product {
@@ -30,7 +30,7 @@ model Product {
   imageGallery   Json
   ProductAddOn   ProductAddOn[]
   RelatedProduct RelatedProduct[]
-  Category       Category[]
+  Category       Category[]       @relation("CategoryToProduct")
 }
 
 model ProductAddOn {
