@@ -1,10 +1,9 @@
-import Image from "next/image";
 import GoBack from "@/app/go-back";
 import AboutAudiofile from "../../about-audiofile";
 import Categories from "../../categories";
 import ProductDetails from "./product-details";
 
-export default function ProductListingPage({
+export default function ProductDetailPage({
   params,
 }: {
   params: { categoryName: string; productSlug: string };
