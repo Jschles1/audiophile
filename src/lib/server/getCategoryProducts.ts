@@ -1,19 +1,4 @@
 import prismadb from "@/lib/prisma-db";
-import { Product, Prisma } from "@prisma/client";
-
-interface ProductResponse {
-  id: number;
-  slug: string;
-  name: string;
-  mobileImage: string;
-  tabletImage: string;
-  desktopImage: string;
-  new: boolean;
-  price: number;
-  description: string;
-  features: string;
-  imageGallery: Prisma.JsonValue;
-}
 
 export default async function getCategoryProducts(categoryName: string) {
   try {
