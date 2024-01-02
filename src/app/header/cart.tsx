@@ -1,22 +1,14 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import Link from "next/link";
-import CounterButton from "../counter-button";
 import CartItem from "../cart-item";
 import { Button } from "@/components/ui/button";
-
-const xx99_placeholder =
-  "https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/da22de76-9f3e-4b4f-fb6c-873ae4bad600/public";
-const xx59_placeholder =
-  "https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/ff2d3b3a-b435-4f46-9764-2ffb3d1e2600/public";
-const yx1_placeholder =
-  "https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/18a6e5ad-f8d3-46c1-f7d9-44500c50e200/public";
-
-// Use zustand to manage the cart state
+import useStore from "@/lib/store";
 
 const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
+  const { cartItems, removeAllProducts } = useStore();
+  const hasCartItems = cartItems.length > 0;
   return (
     <div
       ref={ref}
@@ -28,35 +20,25 @@ const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
         </p>
         <Button
           variant="ghost"
+          onClick={removeAllProducts}
           className="text-black text-opacity-50 underline p-0 normal-case text-[0.938rem] leading-[1.563rem] hover:text-raw-sienna"
         >
           Remove all
         </Button>
       </div>
       <div className="flex flex-col py-8 gap-y-6">
-        <CartItem
-          variant="cart"
-          name="XX99 Mark II"
-          quantity={1}
-          price={2999}
-          image={xx99_placeholder}
-        />
-
-        <CartItem
-          variant="cart"
-          name="XX59"
-          quantity={1}
-          price={899}
-          image={xx59_placeholder}
-        />
-
-        <CartItem
-          name="YX1"
-          quantity={1}
-          price={599}
-          image={yx1_placeholder}
-          variant="cart"
-        />
+        {hasCartItems &&
+          cartItems.map((item) => (
+            <CartItem
+              variant="cart"
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              quantity={item.quantity}
+              price={item.price}
+              image={item.image}
+            />
+          ))}
       </div>
       <div className="pb-6 flex flex-row item-center justify-between">
         <p className="text-black text-opacity-50 uppercase text-[0.938rem] leading-[1.563rem]">
@@ -67,7 +49,7 @@ const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
         </p>
       </div>
       <Link href="/checkout">
-        <Button variant="default" className="w-full">
+        <Button variant="default" className="w-full" disabled={!hasCartItems}>
           Checkout
         </Button>
       </Link>

@@ -1,7 +1,9 @@
 import Image from "next/image";
 import CounterButton from "./counter-button";
+import { truncateProductName } from "@/lib/utils";
 
 interface CartItemProps {
+  id: number;
   name: string;
   quantity: number;
   price: number;
@@ -30,9 +32,11 @@ export default function CartItem({
       </div>
 
       <div className="pl-4 flex-1">
-        <p className="text-black text-[0.938rem] leading-[1.563rem]">{name}</p>
+        <p className="text-black text-[0.938rem] leading-[1.563rem]">
+          {truncateProductName(name)}
+        </p>
         <p className="text-black text-opacity-50 text-sm leading-[1.563rem]">
-          ${price.toLocaleString()}
+          ${(price * quantity).toLocaleString()}
         </p>
       </div>
 

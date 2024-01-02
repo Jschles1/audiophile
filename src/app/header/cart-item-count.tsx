@@ -1,9 +1,18 @@
+"use client";
+
+import * as React from "react";
 import useStore from "@/lib/store";
 
 export default function CartItemCount() {
   const cartItems = useStore((state) => state.cartItems);
 
-  if (!cartItems.length) {
+  const [isLoaded, setIsLoaded] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsLoaded(true);
+  }, [cartItems]);
+
+  if (!isLoaded || !cartItems.length) {
     return null;
   }
 
