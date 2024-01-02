@@ -123,7 +123,6 @@ export default function ProductDetails({
       console.log("existingProduct", existingProduct);
       incrementAmount(data.id);
     } else {
-      console.log("no existingProduct");
       addProductToCart({
         id: data.id,
         name: data.name,
@@ -213,7 +212,7 @@ export default function ProductDetails({
                         id={data.id}
                         name={data.name}
                         quantity={addedProducts}
-                        price={data.price.toLocaleString()}
+                        price={data.price}
                         image={data.mobileImage}
                         variant="checkout"
                       />

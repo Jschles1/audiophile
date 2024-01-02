@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as z from "zod";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import GoBack from "@/app/go-back";
@@ -21,13 +22,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import CashDeliveryIcon from "/public/assets/checkout/icon-cash-on-delivery.svg";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-const xx99_placeholder =
-  "https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/da22de76-9f3e-4b4f-fb6c-873ae4bad600/public";
-const xx59_placeholder =
-  "https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/ff2d3b3a-b435-4f46-9764-2ffb3d1e2600/public";
-const yx1_placeholder =
-  "https://imagedelivery.net/6KDd5cVQw9hKTW2jhIVucw/18a6e5ad-f8d3-46c1-f7d9-44500c50e200/public";
+import useStore from "@/lib/store";
 
 function SectionHeader({ children }: { children: React.ReactNode }) {
   return (
@@ -67,7 +62,11 @@ const cashSchema = baseSchema.extend({
 
 const formSchema = z.union([emoneySchema, cashSchema]);
 
+const SHIPPING_FEE = 50;
+const VAT = 0.2;
+
 export default function Checkout() {
+  const { cartItems } = useStore();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -90,6 +89,7 @@ export default function Checkout() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    console.log("Success");
     console.log(values);
   }
 
@@ -103,6 +103,14 @@ export default function Checkout() {
       form.clearErrors(["emoneyNumber", "pin"]);
     }
   }, [form.formState.isSubmitted, currentPaymentMethod, form]);
+
+  if (!cartItems.length) {
+    redirect("/");
+  }
+
+  const cartTotal = cartItems.reduce((a, b) => a + b.price * b.quantity, 0);
+  const vatTax = cartTotal * VAT;
+  const grandTotal = cartTotal + SHIPPING_FEE + vatTax;
 
   return (
     <div className="w-full bg-alabaster">
@@ -321,48 +329,55 @@ export default function Checkout() {
                   </div>
 
                   {currentPaymentMethod === "emoney" && (
-                    <div className="flex flex-col gap-y-6 md:flex-row md:flex-wrap md:gap-x-4">
-                      <FormField
-                        control={form.control}
-                        name="emoneyNumber"
-                        render={({ field }) => (
-                          <FormItem className="md:basis-[48%]">
-                            <div className="w-full flex items-center justify-between">
-                              <FormLabel>e-Money Number</FormLabel>
-                              <FormMessage />
-                            </div>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                placeholder="238521993"
-                                error={errors?.emoneyNumber?.message}
-                                {...field}
-                              />
-                            </FormControl>
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="pin"
-                        render={({ field }) => (
-                          <FormItem className="md:basis-[48%]">
-                            <div className="w-full flex items-center justify-between">
-                              <FormLabel>e-Money PIN</FormLabel>
-                              <FormMessage />
-                            </div>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                maxLength={4}
-                                placeholder="6981"
-                                error={errors?.pin?.message}
-                                {...field}
-                              />
-                            </FormControl>
-                          </FormItem>
-                        )}
-                      />
+                    <div>
+                      <p className="text-[0.75rem] text-red font-bold pb-4 italic">
+                        Disclaimer: Do NOT enter any real payment information on
+                        this form. This is a mock application for demonstration
+                        and testing purposes only.{" "}
+                      </p>
+                      <div className="flex flex-col gap-y-6 md:flex-row md:flex-wrap md:gap-x-4">
+                        <FormField
+                          control={form.control}
+                          name="emoneyNumber"
+                          render={({ field }) => (
+                            <FormItem className="md:basis-[48%]">
+                              <div className="w-full flex items-center justify-between">
+                                <FormLabel>e-Money Number</FormLabel>
+                                <FormMessage />
+                              </div>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  placeholder="238521993"
+                                  error={errors?.emoneyNumber?.message}
+                                  {...field}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="pin"
+                          render={({ field }) => (
+                            <FormItem className="md:basis-[48%]">
+                              <div className="w-full flex items-center justify-between">
+                                <FormLabel>e-Money PIN</FormLabel>
+                                <FormMessage />
+                              </div>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  maxLength={4}
+                                  placeholder="6981"
+                                  error={errors?.pin?.message}
+                                  {...field}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                     </div>
                   )}
 
@@ -390,29 +405,17 @@ export default function Checkout() {
                 Summary
               </p>
               <div className="flex flex-col py-8 gap-y-6">
-                <CartItem
-                  variant="checkout"
-                  name="XX99 Mark II"
-                  quantity={1}
-                  price={2999}
-                  image={xx99_placeholder}
-                />
-
-                <CartItem
-                  variant="checkout"
-                  name="XX59"
-                  quantity={1}
-                  price={899}
-                  image={xx59_placeholder}
-                />
-
-                <CartItem
-                  name="YX1"
-                  quantity={1}
-                  price={599}
-                  image={yx1_placeholder}
-                  variant="checkout"
-                />
+                {cartItems.map((item) => (
+                  <CartItem
+                    variant="checkout"
+                    key={item.id}
+                    id={item.id}
+                    name={item.name}
+                    quantity={item.quantity}
+                    price={item.price}
+                    image={item.image}
+                  />
+                ))}
               </div>
 
               <div className="flex flex-col gap-y-2">
@@ -421,7 +424,7 @@ export default function Checkout() {
                     Total
                   </p>
                   <p className="text-black font-bold text-lg leading-[normal]">
-                    ${(5396).toLocaleString()}
+                    ${cartTotal.toFixed(2).toLocaleString()}
                   </p>
                 </div>
 
@@ -430,7 +433,7 @@ export default function Checkout() {
                     Shipping
                   </p>
                   <p className="text-black font-bold text-lg leading-[normal]">
-                    ${(50).toLocaleString()}
+                    ${SHIPPING_FEE.toLocaleString()}
                   </p>
                 </div>
 
@@ -439,7 +442,7 @@ export default function Checkout() {
                     VAT (Included)
                   </p>
                   <p className="text-black font-bold text-lg leading-[normal]">
-                    ${(1079).toLocaleString()}
+                    ${vatTax.toFixed(2).toLocaleString()}
                   </p>
                 </div>
               </div>
@@ -449,7 +452,7 @@ export default function Checkout() {
                   Grand Total
                 </p>
                 <p className="font-bold text-lg leading-[normal] text-raw-sienna">
-                  ${(5446).toLocaleString()}
+                  ${grandTotal.toFixed(2).toLocaleString()}
                 </p>
               </div>
 
