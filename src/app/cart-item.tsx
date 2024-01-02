@@ -1,5 +1,6 @@
 import Image from "next/image";
 import CounterButton from "./counter-button";
+import useStore from "@/lib/store";
 import { truncateProductName } from "@/lib/utils";
 
 interface CartItemProps {
@@ -12,14 +13,25 @@ interface CartItemProps {
 }
 
 export default function CartItem({
+  id,
   name,
   quantity,
   price,
   image,
   variant,
 }: CartItemProps) {
+  const { incrementAmount, decrementAmount, removeProductFromCart } =
+    useStore();
+
+  function handleDecrement() {
+    if (quantity > 1) {
+      decrementAmount(id);
+    } else {
+      removeProductFromCart(id);
+    }
+  }
+
   return (
-    // TODO: Need to add truncated version of the product name
     <div className="flex flex-row items-center">
       <div>
         <Image
@@ -36,7 +48,7 @@ export default function CartItem({
           {truncateProductName(name)}
         </p>
         <p className="text-black text-opacity-50 text-sm leading-[1.563rem]">
-          ${(price * quantity).toLocaleString()}
+          ${(price * quantity).toFixed(2).toLocaleString()}
         </p>
       </div>
 
@@ -44,8 +56,8 @@ export default function CartItem({
         <CounterButton
           variant="cart"
           className="w-[96px]"
-          onIncrement={() => {}}
-          onDecrement={() => {}}
+          onIncrement={() => incrementAmount(id)}
+          onDecrement={handleDecrement}
           value={quantity}
         />
       )}

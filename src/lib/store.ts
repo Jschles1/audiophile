@@ -17,6 +17,7 @@ interface State {
 
 interface Action {
   addProductToCart: (item: CartItem) => void;
+  removeProductFromCart: (id: number) => void;
   incrementAmount: (id: number) => void;
   decrementAmount: (id: number) => void;
   removeAllProducts: () => void;
@@ -28,6 +29,10 @@ const useStore = create<State & Action, [["zustand/persist", State & Action]]>(
       cartItems: [],
       addProductToCart: (item: CartItem) =>
         set((state) => ({ cartItems: [...state.cartItems, item] })),
+      removeProductFromCart: (id: number) =>
+        set((state) => ({
+          cartItems: state.cartItems.filter((item) => item.id !== id),
+        })),
       incrementAmount: (id: number) =>
         set((state) => ({
           cartItems: state.cartItems.map((item, index) =>

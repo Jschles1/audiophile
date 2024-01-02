@@ -9,6 +9,9 @@ import useStore from "@/lib/store";
 const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
   const { cartItems, removeAllProducts } = useStore();
   const hasCartItems = cartItems.length > 0;
+  const total = hasCartItems
+    ? cartItems.reduce((a, b) => a + b.price * b.quantity, 0)
+    : 0;
   return (
     <div
       ref={ref}
@@ -16,7 +19,7 @@ const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
     >
       <div className="flex flex-row items-center justify-between z-50 relative">
         <p className="text-black font-bold text-lg tracking-[0.080375em] leading-[normal]">
-          Cart (3)
+          Cart ({cartItems.length})
         </p>
         <Button
           variant="ghost"
@@ -45,7 +48,7 @@ const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
           Total
         </p>
         <p className="text-black font-bold text-lg leading-[normal]">
-          ${(5496).toLocaleString()}
+          ${total.toLocaleString()}
         </p>
       </div>
       <Link href="/checkout">
