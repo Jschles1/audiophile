@@ -1,7 +1,10 @@
+"use client";
+
+import * as React from "react";
 import Image from "next/image";
 import CounterButton from "./counter-button";
 import useStore from "@/lib/store";
-import { truncateProductName } from "@/lib/utils";
+import { cn, truncateProductName } from "@/lib/utils";
 
 interface CartItemProps {
   id: number;
@@ -20,6 +23,7 @@ export default function CartItem({
   image,
   variant,
 }: CartItemProps) {
+  const [isLoaded, setIsLoaded] = React.useState(false);
   const { incrementAmount, decrementAmount, removeProductFromCart } =
     useStore();
 
@@ -31,8 +35,21 @@ export default function CartItem({
     }
   }
 
+  React.useEffect(() => {
+    setIsLoaded(true);
+  }, [incrementAmount, decrementAmount, removeProductFromCart]);
+
+  if (!isLoaded) {
+    return null;
+  }
+
   return (
-    <div className="flex flex-row items-center">
+    <div
+      className={cn(
+        "flex flex-row items-center",
+        variant === "checkout" && "justify-between w-full"
+      )}
+    >
       <div>
         <Image
           className="rounded-lg"
