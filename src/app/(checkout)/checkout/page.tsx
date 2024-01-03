@@ -3,7 +3,8 @@
 import * as React from "react";
 import * as z from "zod";
 import Image from "next/image";
-import { redirect } from "next/navigation";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import GoBack from "@/app/go-back";
@@ -16,14 +17,32 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import ConfirmationIcon from "/public/assets/checkout/icon-order-confirmation.svg";
 import CashDeliveryIcon from "/public/assets/checkout/icon-cash-on-delivery.svg";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import useStore from "@/lib/store";
 import formSchema from "./checkout-form-schema";
+import { Loader2 } from "lucide-react";
 
 function SectionHeader({ children }: { children: React.ReactNode }) {
   return (
@@ -37,7 +56,13 @@ const SHIPPING_FEE = 50;
 const VAT = 0.2;
 
 export default function Checkout() {
-  const { cartItems } = useStore();
+  const { cartItems, removeAllProducts } = useStore();
+  const router = useRouter();
+  const [isLoaded, setIsLoaded] = React.useState(false);
+  const [isOrderPending, setIsOrderPending] = React.useState(false);
+  const [accordion, setAccordion] = React.useState("one");
+  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
+    React.useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,13 +82,24 @@ export default function Checkout() {
   const currentPaymentMethod = form.watch("paymentMethod");
   const errors = form.formState.errors;
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Success");
-    console.log(values);
+    setIsOrderPending(true);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setIsConfirmationDialogOpen(true);
+    setIsOrderPending(false);
   }
 
   function handlePaymentMethodChange(value: string) {
     form.setValue("paymentMethod", value as "emoney" | "cash");
+  }
+
+  function closeConfirmationDialog() {
+    if (isConfirmationDialogOpen) {
+      setIsConfirmationDialogOpen(false);
+      router.push("/");
+      removeAllProducts();
+    }
   }
 
   // Clear errors when switching payment methods
@@ -73,9 +109,23 @@ export default function Checkout() {
     }
   }, [form.formState.isSubmitted, currentPaymentMethod, form]);
 
+  // For fixing zustand hydration issue
+  React.useEffect(() => {
+    setIsLoaded(true);
+  }, [cartItems]);
+
+  if (!cartItems?.length) return null;
+  if (!isLoaded) return <div>Loading...</div>;
+
+  console.log({ cartItems });
+
   if (!cartItems.length) {
-    redirect("/");
+    if (typeof window !== "undefined") {
+      router.push("/");
+    }
   }
+
+  console.log({ accordion });
 
   const cartTotal = cartItems.reduce((a, b) => a + b.price * b.quantity, 0);
   const vatTax = cartTotal * VAT;
@@ -425,9 +475,107 @@ export default function Checkout() {
                 </p>
               </div>
 
-              <Button variant="default" type="submit" className="w-full">
-                Continue & Pay
-              </Button>
+              <Dialog
+                open={isConfirmationDialogOpen}
+                onOpenChange={closeConfirmationDialog}
+              >
+                <DialogTrigger asChild>
+                  <Button variant="default" type="submit" className="w-full">
+                    {isOrderPending ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      "Continue & Pay"
+                    )}
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <Image src={ConfirmationIcon} alt="" />
+                    <DialogTitle>Thank you for your order</DialogTitle>
+                    <DialogDescription>
+                      <p className="text-black text-opacity-50 text-[0.938rem] leading-[1.563rem] pb-6">
+                        You will receive an email confirmation shortly.
+                      </p>
+                      <div className="md:flex md:flex-row md:w-full">
+                        <div className="rounded-t-lg md:rounded-tr-none md:rounded-br-none md:rounded-bl-lg md:flex-1 bg-seashell p-6">
+                          {cartItems.length === 1 ? (
+                            <CartItem
+                              id={cartItems[0].id}
+                              name={cartItems[0].name}
+                              quantity={cartItems[0].quantity}
+                              price={cartItems[0].price}
+                              image={cartItems[0].image}
+                              variant="checkout"
+                            />
+                          ) : (
+                            <div>
+                              <Accordion
+                                type="single"
+                                collapsible
+                                value={accordion}
+                                onValueChange={(value) => setAccordion(value)}
+                              >
+                                <AccordionItem value={"one"}>
+                                  <AccordionTrigger asChild>
+                                    <div className="w-full">
+                                      <CartItem
+                                        id={cartItems[0].id}
+                                        name={cartItems[0].name}
+                                        quantity={cartItems[0].quantity}
+                                        price={cartItems[0].price}
+                                        image={cartItems[0].image}
+                                        variant="checkout"
+                                      />
+                                      {accordion !== "one" && (
+                                        <div className="w-full">
+                                          <div className="text-center hover:cursor-pointer hover:underline pt-[0.75rem] data-[state=open]:hidden border-t border-black border-opacity-[0.08]">
+                                            and {cartItems.length - 1} other
+                                            items(s)
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </AccordionTrigger>
+                                  <AccordionContent>
+                                    {cartItems.slice(1).map((item) => (
+                                      <CartItem
+                                        key={item.id}
+                                        id={item.id}
+                                        name={item.name}
+                                        quantity={item.quantity}
+                                        price={item.price}
+                                        image={item.image}
+                                        variant="checkout"
+                                      />
+                                    ))}
+                                  </AccordionContent>
+                                </AccordionItem>
+                              </Accordion>
+                            </div>
+                          )}
+                        </div>
+                        <div className="rounded-b-lg md:rounded-bl-none md:rounded-tr-lg bg-black p-6 flex flex-col gap-y-2 md:basis-1/3 md:justify-center">
+                          <p className="text-white text-opacity-50 text-[0.938rem] leading-[1.563rem] uppercase">
+                            Grand Total
+                          </p>
+                          <p className="text-white leading-[normal] text-lg font-bold">
+                            ${grandTotal.toFixed(2).toLocaleString()}
+                          </p>
+                        </div>
+                      </div>
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter className="flex flex-col">
+                    <DialogClose asChild>
+                      <Link href="/">
+                        <Button variant="default" className="w-full">
+                          Back To Home
+                        </Button>
+                      </Link>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </form>
