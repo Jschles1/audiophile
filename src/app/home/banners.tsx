@@ -42,7 +42,7 @@ export default function Banners() {
             truly remarkable sound.
           </p>
 
-          <Link href="/">
+          <Link href="/speakers/zx9-speaker">
             <Button variant="black">See Product</Button>
           </Link>
         </div>
@@ -64,7 +64,7 @@ export default function Banners() {
           <p className="uppercase text-black text-[1.75rem] font-bold tracking-[0.125em] pb-8 z-20 relative hover:text-black">
             ZX7 Speaker
           </p>
-          <Link href="/" className="z-20">
+          <Link href="/speakers/zx7-speaker" className="z-20">
             <Button variant="white" className="relative">
               See Product
             </Button>
@@ -88,7 +88,7 @@ export default function Banners() {
           <p className="uppercase text-black text-[1.75rem] font-bold tracking-[0.125em] pb-8 z-10 relative">
             YX1 Earphones
           </p>
-          <Link href="/">
+          <Link href="/earphones/yx1-earphones">
             <Button variant="white" className="z-10 relative">
               See Product
             </Button>
