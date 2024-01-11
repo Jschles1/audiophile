@@ -7,8 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import GoBack from "@/app/go-back";
-import CartItem from "@/app/cart-item";
+import GoBack from "@/app/shared/go-back";
+import CartItem from "@/app/shared/cart-item";
 import {
   Form,
   FormControl,

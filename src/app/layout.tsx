@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import QueryProviders from "./query-providers";
-import Header from "./header/header";
-import Footer from "./footer";
+import Header from "./shared/header/header";
+import Footer from "./shared/footer";
 import "./globals.css";
 
 const manrope = Manrope({ subsets: ["latin"] });

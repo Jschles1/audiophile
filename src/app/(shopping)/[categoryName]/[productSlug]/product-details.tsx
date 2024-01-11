@@ -17,10 +17,10 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import CounterButton from "@/app/counter-button";
+import CounterButton from "@/app/shared/counter-button";
 import { cn } from "@/lib/utils";
 import ConfirmationIcon from "/public/assets/checkout/icon-order-confirmation.svg";
-import CartItem from "@/app/cart-item";
+import CartItem from "@/app/shared/cart-item";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductDetail } from "@/lib/fetchers";
 import ProductDetailsSkeletons from "./product-details-skeletons";

@@ -1,4 +1,4 @@
-import GoBack from "@/app/go-back";
+import GoBack from "@/app/shared/go-back";
 import AboutAudiofile from "../../about-audiofile";
 import Categories from "../../categories";
 import ProductDetails from "./product-details";

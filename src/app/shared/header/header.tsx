@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import AudiophileLogo from "/public/assets/shared/desktop/logo.svg";
 import HamburgerMenuIcon from "/public/assets/shared/tablet/icon-hamburger.svg";
-import Categories from "../(shopping)/categories";
+import Categories from "../../(shopping)/categories";
 
 function HeaderLink({ href, children }: { href: string; children: string }) {
   return (
