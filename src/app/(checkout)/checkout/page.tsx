@@ -121,15 +121,11 @@ export default function Checkout() {
     );
   if (!cartItems?.length) return null;
 
-  console.log({ cartItems });
-
   if (!cartItems.length) {
     if (typeof window !== "undefined") {
       router.push("/");
     }
   }
-
-  console.log({ accordion });
 
   const cartTotal = cartItems.reduce((a, b) => a + b.price * b.quantity, 0);
   const vatTax = cartTotal * VAT;

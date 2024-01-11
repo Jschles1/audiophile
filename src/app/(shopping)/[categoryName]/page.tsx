@@ -17,7 +17,6 @@ export default async function ProductListingPage({
     notFound();
   }
 
-  console.log({ categoryProducts });
   return (
     <div className="w-full bg-alabaster">
       <CategoryHeader categoryName={categoryName} />

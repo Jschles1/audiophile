@@ -121,7 +121,6 @@ export default function ProductDetails({
       (cartItem) => cartItem.id === data.id
     );
     if (existingProduct) {
-      console.log("existingProduct", existingProduct);
       incrementAmount(data.id);
     } else {
       addProductToCart({

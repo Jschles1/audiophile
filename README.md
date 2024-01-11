@@ -6,15 +6,14 @@ This is a solution to the [Audiophile e-commerce website challenge on Frontend M
 
 - [Overview](#overview)
   - [The challenge](#the-challenge)
-  - [Screenshot](#screenshot)
+  - [Bonus features I added](#bonus-features-i-added)
   - [Links](#links)
 - [My process](#my-process)
   - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
+  - [Summary](#summary)
   - [Continued development](#continued-development)
   - [Useful resources](#useful-resources)
 - [Author](#author)
-- [Acknowledgments](#acknowledgments)
 
 **Note: Delete this note and update the table of contents based on what sections you keep.**
 
@@ -34,87 +33,107 @@ Users should be able to:
   - Shipping always adds $50 to the order
   - VAT is calculated as 20% of the product total, excluding shipping
 - See an order confirmation modal after checking out with an order summary
-- **Bonus**: Keep track of what's in the cart, even after refreshing the browser (`localStorage` could be used for this if you're not building out a full-stack app)
+- Keep track of what's in the cart, even after refreshing the browser (`localStorage` could be used for this if you're not building out a full-stack app)
 
-### Screenshot
+### Bonus features I added
 
-![](./screenshot.jpg)
+Coming from an extensive background of working on a wide variety of e-commerce applications for major brands, I thought I would add a few additional features to improve the user experience in relation to e-commerce best practices.
 
-Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
-
-Alternatively, you can use a tool like [FireShot](https://getfireshot.com/) to take the screenshot. FireShot has a free option, so you don't need to purchase it. 
-
-Then crop/optimize/edit your image however you like, add it to your project, and update the file path in the image above.
-
-**Note: Delete this note and the paragraphs above when you add your screenshot. If you prefer not to add a screenshot, feel free to remove this entire section.**
+- Added an add to cart confirmation dialog to confirm to the user the product was added to cart. User can continue shopping or be brought to checkout.
+- Added loading skeletons and spinners to show to the user while data is being fetched from the backend.
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [https://github.com/Jschles1/audiophile](https://github.com/Jschles1/audiophile)
+- Live Site URL: [https://audiophile-alpha-mocha.vercel.app/](https://audiophile-alpha-mocha.vercel.app/)
 
 ## My process
 
 ### Built with
 
-- Semantic HTML5 markup
-- CSS custom properties
-- Flexbox
-- CSS Grid
-- Mobile-first workflow
-- [React](https://reactjs.org/) - JS library
-- [Next.js](https://nextjs.org/) - React framework
-- [Styled Components](https://styled-components.com/) - For styles
+- Mobile-first workflow.
+- [React](https://reactjs.org/) - JS library for building user interfaces.
+- [Typescript](https://www.typescriptlang.org/) - Superset of javascript for adding static typing features. Catches errors at build time instead of build time, and greatly improves the developer experience. Mostly used in this application for typing react component props and state.
+- [Prisma](https://www.prisma.io/) - JS/Typescript object relational mapper library.
+- [Next.js](https://nextjs.org/) - React framework. Uses version 14 with app router and react server component architecture.
+- [shadcn/ui](https://ui.shadcn.com/) - Copy and paste component library built in TailwindCSS.
+- PostgreSQL - For storing product information in a database.
+- [Bun](https://bun.sh/) - Javascript runtime I used for database seeding script and uploading product images to Cloudflare CDN based on provided data in data.json.
+- Cloudflare CDN - Enhances image performance by ensuring faster image delivery and by optimizing image size and format.
+- [React Hook Form](https://react-hook-form.com/) - JS library for building forms in react applications.
+- [Zod](https://zod.dev) - Typescript-first library schema and validation library. Used for validating checkout form state.
+- [Zustand](https://zustand-demo.pmnd.rs/) - State management library. Used for tracking cart state, and persisting cart state between sessions via local storage.
+- [React Query](https://tanstack.com/query/v3/) - JS state management library using for client-side fetching and synchronizing server state with client.
 
-**Note: These are just examples. Delete this note and replace the list above with your own choices**
+### Project Summary
 
-### What I learned
+I used this challenge as an opportunity to build a full-stack project and test my backend skills.
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
+The data model I came up with is as follows:
 
-To see how you can add code snippets, see below:
+# Category
+- **id** (Integer): Unique identifier, autoincremented.
+- **name** (String): Name of the category.
+- **mobileCategoryImage** (String): Image URL for mobile view.
+- **tabletCategoryImage** (String): Image URL for tablet view.
+- **desktopCategoryImage** (String): Image URL for desktop view.
+- **Products** (Array of Product): Related products.
+  - Foreign Key in Product: `categoryId`
 
-```html
-<h1>Some HTML code I'm proud of</h1>
-```
-```css
-.proud-of-this-css {
-  color: papayawhip;
-}
-```
-```js
-const proudOfThisFunc = () => {
-  console.log('🎉')
-}
-```
+# Product
+- **id** (Integer): Unique identifier, autoincremented.
+- **slug** (String): Slug for the product.
+- **name** (String): Name of the product.
+- **mobileImage** (String): Mobile view image URL.
+- **tabletImage** (String): Tablet view image URL.
+- **desktopImage** (String): Desktop view image URL.
+- **new** (Boolean): Flag indicating if the product is new.
+- **price** (Integer): Price of the product.
+- **description** (String): Description of the product.
+- **features** (String): Features of the product.
+- **imageGallery** (JSON): Gallery of images.
+- **ProductAddOns** (Array of ProductAddOn): Related add-ons.
+- **RelatedProducts** (Array of RelatedProduct): Related products.
+- **Categories** (Array of Category): Associated categories.
+  - Foreign Key: `categoryId` (Referencing Category)
 
-If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
+# ProductAddOn
+- **id** (Integer): Unique identifier, autoincremented.
+- **quantity** (Integer): Quantity of the add-on.
+- **productId** (Integer): Identifier of the related product (Foreign Key).
+- **item** (String): Name or description of the add-on.
 
-**Note: Delete this note and the content within this section and replace with your own learnings.**
+# RelatedProduct
+- **id** (Integer): Unique identifier, autoincremented.
+- **name** (String): Name of the related product.
+- **productId** (Integer): Identifier of the main product (Foreign Key).
+- **slug** (String): Slug of the related product.
+- **desktopImage** (String): Desktop view image URL.
+- **mobileImage** (String): Mobile view image URL.
+- **tabletImage** (String): Tablet view image URL.
+
+Using the provided image files and `data.json` file, I created a script to seed the data into a PostgreSQL database. For each product image, I also added functionality to change to image format to one that was supported by Cloudflare Image CDN's API, and then upload the image to Cloudflare. You can find the code for the seeder [here](https://github.com/Jschles1/audiophile-seeder).
+
+In the live site, each category page and product detail page will dynamically fetch data based on the category and product slug in the URL, similar to how most e-commerce applications operate.
 
 ### Continued development
 
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
-
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
+Some items I plan to continue development on post-MVP:
+- Fine tune accessibility best practices.
+- Add quantity_in_stock field to Products table. Each order placed removes number of ordered products from quantity_in_stock. Products with 0 quantity_in_stock will be considered "Out of Stock" and not be able to be added to cart.
+- Add cron job that runs weekly, resetting the quantity_in_stock for each product.
+- Add support for user login with a Users table.
+- Add an Orders table and give users the ability to look at past orders.
+- Potential CMS integration for changing home page content.
+- Storybook integration.
+- End to end testing with Playwright.
+- Unit testing.
 
 ### Useful resources
 
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
-
-**Note: Delete this note and replace the list above with resources that helped you during the challenge. These could come in handy for anyone viewing your solution or for yourself when you look back on this project in the future.**
+- [Making Sense of React Server Components](https://www.joshwcomeau.com/react/server-components/) - Gives an in-depth explanation of react server components which are prominently used in Next 14.
 
 ## Author
 
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
-
-**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
-
-## Acknowledgments
-
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
-
-**Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**
+- Website - [John Schlesinger](https://jschles-portfolio.vercel.app/)
+- Frontend Mentor - [@Jschles1](https://www.frontendmentor.io/profile/Jschles1)

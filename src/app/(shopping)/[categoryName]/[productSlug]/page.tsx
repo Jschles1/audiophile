@@ -17,9 +17,6 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  console.log({ productData });
-  console.log({ addons: productData.ProductAddOn });
-  console.log({ related: productData.RelatedProduct });
   return (
     <div className="w-full bg-alabaster">
       <GoBack />
