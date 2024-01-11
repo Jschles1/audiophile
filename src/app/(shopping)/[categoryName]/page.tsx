@@ -11,7 +11,6 @@ export default async function ProductListingPage({
   params: { categoryName: string };
 }) {
   const { categoryName } = params;
-  await new Promise((resolve) => setTimeout(resolve, 2000));
   const categoryProducts = await getCategoryProducts(categoryName);
 
   if (categoryProducts === null) {
