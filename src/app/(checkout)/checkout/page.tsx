@@ -83,7 +83,6 @@ export default function Checkout() {
   const errors = form.formState.errors;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Success");
     setIsOrderPending(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsConfirmationDialogOpen(true);
@@ -114,8 +113,13 @@ export default function Checkout() {
     setIsLoaded(true);
   }, [cartItems]);
 
+  if (!isLoaded)
+    return (
+      <div>
+        <Loader2 className="animate-spin h-8 w-8" />
+      </div>
+    );
   if (!cartItems?.length) return null;
-  if (!isLoaded) return <div>Loading...</div>;
 
   console.log({ cartItems });
 
