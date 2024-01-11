@@ -71,7 +71,7 @@ I used this challenge as an opportunity to build a full-stack project and test m
 
 The data model I came up with is as follows:
 
-# Category
+#### Category
 - **id** (Integer): Unique identifier, autoincremented.
 - **name** (String): Name of the category.
 - **mobileCategoryImage** (String): Image URL for mobile view.
@@ -80,7 +80,7 @@ The data model I came up with is as follows:
 - **Products** (Array of Product): Related products.
   - Foreign Key in Product: `categoryId`
 
-# Product
+#### Product
 - **id** (Integer): Unique identifier, autoincremented.
 - **slug** (String): Slug for the product.
 - **name** (String): Name of the product.
@@ -97,13 +97,13 @@ The data model I came up with is as follows:
 - **Categories** (Array of Category): Associated categories.
   - Foreign Key: `categoryId` (Referencing Category)
 
-# ProductAddOn
+#### ProductAddOn
 - **id** (Integer): Unique identifier, autoincremented.
 - **quantity** (Integer): Quantity of the add-on.
 - **productId** (Integer): Identifier of the related product (Foreign Key).
 - **item** (String): Name or description of the add-on.
 
-# RelatedProduct
+#### RelatedProduct
 - **id** (Integer): Unique identifier, autoincremented.
 - **name** (String): Name of the related product.
 - **productId** (Integer): Identifier of the main product (Foreign Key).
