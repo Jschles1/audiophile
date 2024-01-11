@@ -23,6 +23,7 @@ import ConfirmationIcon from "/public/assets/checkout/icon-order-confirmation.sv
 import CartItem from "@/app/cart-item";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductDetail } from "@/lib/fetchers";
+import ProductDetailsSkeletons from "./product-details-skeletons";
 
 function ProductFeature({
   name,
@@ -98,7 +99,7 @@ export default function ProductDetails({
   productSlug,
 }: ProductDetailsProps) {
   const { cartItems, addProductToCart, incrementAmount } = useStore();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isFetching, isRefetching } = useQuery({
     queryKey: ["productDetail", productSlug],
     queryFn: () => fetchProductDetail(categoryName, productSlug),
     initialData: initialData,
@@ -139,8 +140,8 @@ export default function ProductDetails({
     if (isProductAdded) setIsProductAdded(false);
   }
 
-  if (isLoading) {
-    return <div>Loading Product...</div>;
+  if (isLoading || isFetching || isRefetching) {
+    return <ProductDetailsSkeletons />;
   }
 
   return (
