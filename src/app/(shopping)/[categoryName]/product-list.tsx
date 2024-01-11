@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchCategorieProducts } from "@/lib/fetchers";
 import ProductListingItem from "./product-listing-item";
 import { Product } from "@prisma/client";
+import ProductListSkeletons from "./product-list-skeletons";
 
 interface ProductListProps {
   initialData: Product[];
@@ -21,7 +22,11 @@ export default function ProductList({
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   });
-  console.log({ data });
+
+  if (isLoading || isFetching || isRefetching) {
+    return <ProductListSkeletons />;
+  }
+
   return (
     <div className="flex flex-col px-6 gap-y-[7.5rem] pb-[10.75rem] pt-16 md:pt-[7.5rem] mx-auto max-w-[1110px]">
       {data?.map((product: Product, index: number) => (
