@@ -37,6 +37,7 @@ Users should be able to:
 
 Coming from an extensive background of working on a wide variety of e-commerce applications for major brands, I thought I would add a few additional features to improve the user experience in relation to e-commerce best practices.
 
+- Store cart state on database, which can be retrieved via a `cartId` cookie stored on the user's browser.
 - Added an add to cart confirmation dialog to confirm to the user the product was added to cart. User can continue shopping or be brought to checkout.
 - Added loading skeletons and spinners to show to the user while data is being fetched from the backend.
 
@@ -60,7 +61,6 @@ Coming from an extensive background of working on a wide variety of e-commerce a
 - Cloudflare CDN - Enhances image performance by ensuring faster image delivery and by optimizing image size and format.
 - [React Hook Form](https://react-hook-form.com/) - JS library for building forms in react applications.
 - [Zod](https://zod.dev) - Typescript-first library schema and validation library. Used for validating checkout form state.
-- [Zustand](https://zustand-demo.pmnd.rs/) - State management library. Used for tracking cart state, and persisting cart state between sessions via local storage.
 - [React Query](https://tanstack.com/query/v3/) - JS state management library using for client-side fetching and synchronizing server state with client.
 
 ### Project Summary
@@ -109,6 +109,18 @@ The data model I came up with is as follows:
 - **desktopImage** (String): Desktop view image URL.
 - **mobileImage** (String): Mobile view image URL.
 - **tabletImage** (String): Tablet view image URL.
+
+#### Cart
+- **id** (Integer): Unique identifier, autoincremented.
+- **items** (Array of CartItems): Related cart items.
+
+#### CartItem
+- **id** (Integer): Unique identifier, autoincremented.
+- **name** (String): Name of the related product.
+- **quantity** (Integer): Quantity of the cart item.
+- **cartId** (Integer): Identifier of the related cart (Foreign Key).
+- **price** (Integer): Price of the cart item.
+- **image** (String): Image URL for the cart item.
 
 Using the provided image files and `data.json` file, I created a script to seed the data into a PostgreSQL database. For each product image, I also added functionality to change to image format to one that was supported by Cloudflare Image CDN's API, and then upload the image to Cloudflare. You can find the code for the seeder [here](https://github.com/Jschles1/audiophile-seeder).
 
