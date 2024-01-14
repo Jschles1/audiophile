@@ -51,3 +51,18 @@ model RelatedProduct {
   tabletImage  String
   Product      Product @relation(fields: [productId], references: [id])
 }
+
+model Cart {
+  id        Int     @id @default(autoincrement())
+  items     CartItem[]
+}
+
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  name      String
+  price     Int
+  image     String
+  quantity  Int
+  cartId    Int
+  Cart      Cart    @relation(fields: [cartId], references: [id])
+}
