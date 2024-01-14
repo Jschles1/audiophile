@@ -116,7 +116,7 @@ The data model I came up with is as follows:
 
 #### CartItem
 - **id** (Integer): Unique identifier, autoincremented.
-- **name** (String): Name of the related product.
+- **name** (String): Name of the cart item.
 - **quantity** (Integer): Quantity of the cart item.
 - **cartId** (Integer): Identifier of the related cart (Foreign Key).
 - **price** (Integer): Price of the cart item.
