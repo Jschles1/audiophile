@@ -3,9 +3,13 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Product, ProductAddOn, RelatedProduct } from "@prisma/client";
+import {
+  CartItem as CartItemModel,
+  Product,
+  ProductAddOn,
+  RelatedProduct,
+} from "@prisma/client";
 import { Loader2 } from "lucide-react";
-import useStore from "@/lib/store";
 import {
   Dialog,
   DialogContent,
@@ -20,10 +24,16 @@ import { Button } from "@/components/ui/button";
 import CounterButton from "@/app/shared/counter-button";
 import { cn } from "@/lib/utils";
 import ConfirmationIcon from "/public/assets/checkout/icon-order-confirmation.svg";
-import CartItem from "@/app/shared/cart-item";
-import { useQuery } from "@tanstack/react-query";
-import { fetchProductDetail } from "@/lib/fetchers";
+import CartItem from "@/app/shared/header/cart-item";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  fetchProductDetail,
+  postAddCartItem,
+  postUpdateCartItemQuantity,
+} from "@/lib/fetchers";
 import ProductDetailsSkeletons from "./product-details-skeletons";
+import useCartItems from "@/lib/useCartItems";
+import { useCookies } from "next-client-cookies";
 
 function ProductFeature({
   name,
@@ -98,7 +108,11 @@ export default function ProductDetails({
   initialData,
   productSlug,
 }: ProductDetailsProps) {
-  const { cartItems, addProductToCart, incrementAmount } = useStore();
+  const cookies = useCookies();
+  const queryClient = useQueryClient();
+  const { data: cartData, cartId } = useCartItems();
+  const cartItems: CartItemModel[] = cartData || [];
+
   const { data, isLoading, isFetching, isRefetching } = useQuery({
     queryKey: ["productDetail", productSlug],
     queryFn: () => fetchProductDetail(categoryName, productSlug),
@@ -106,6 +120,7 @@ export default function ProductDetails({
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   });
+
   const [addedProducts, setAddedProducts] = React.useState<number>(1);
   // State property to mimic API request pending state
   const [isAddToCartLoading, setIsAddToCartLoading] =
@@ -114,25 +129,70 @@ export default function ProductDetails({
   const gallery = JSON.parse(data.imageGallery);
   const isNew = data.new;
 
+  const addToCartMutation = useMutation({
+    mutationFn: (cartItem: CartItemModel) => postAddCartItem(cartId, cartItem),
+    onSuccess: async (data) => {
+      console.log({ data });
+      if (!cookies.get("cartId")) {
+        cookies.set("cartId", data.cartId, { path: "/" });
+      }
+      queryClient.refetchQueries({
+        queryKey: ["cart"],
+      });
+      setIsAddToCartLoading(false);
+      setIsProductAdded(true);
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data;
+      console.log({ errorMessage });
+      setIsAddToCartLoading(false);
+      // toast({
+      //   title: "Something went wrong!",
+      //   description: `Error: ${errorMessage}`,
+      // });
+    },
+  });
+
+  const updateCartItemMutation = useMutation({
+    mutationFn: (cartItem: CartItemModel) =>
+      postUpdateCartItemQuantity(cartId, cartItem),
+    onSuccess: async (_) => {
+      await queryClient.refetchQueries({
+        queryKey: ["cart", cartId],
+      });
+      setIsAddToCartLoading(false);
+      setIsProductAdded(true);
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data;
+      console.log({ errorMessage });
+      setIsAddToCartLoading(false);
+      // toast({
+      //   title: "Something went wrong!",
+      //   description: `Error: ${errorMessage}`,
+      // });
+    },
+  });
+
   async function handleAddToCart() {
     setIsAddToCartLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
+    const newCartItem: CartItemModel = {
+      id: data.id as number,
+      name: data.name as string,
+      quantity: addedProducts,
+      price: data.price as number,
+      image: data.mobileImage as string,
+      cartId: parseInt(cartId),
+    };
     const existingProduct = cartItems.find(
       (cartItem) => cartItem.id === data.id
     );
     if (existingProduct) {
-      incrementAmount(data.id);
+      updateCartItemMutation.mutate(newCartItem);
     } else {
-      addProductToCart({
-        id: data.id,
-        name: data.name,
-        quantity: addedProducts,
-        price: data.price,
-        image: data.mobileImage,
-      });
+      addToCartMutation.mutate(newCartItem);
     }
-    setIsAddToCartLoading(false);
-    setIsProductAdded(true);
   }
 
   function closeConfirmationDialog() {

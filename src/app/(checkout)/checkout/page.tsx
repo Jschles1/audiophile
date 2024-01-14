@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import GoBack from "@/app/shared/go-back";
-import CartItem from "@/app/shared/cart-item";
+import CartItem from "@/app/shared/header/cart-item";
 import {
   Form,
   FormControl,
@@ -40,9 +40,12 @@ import ConfirmationIcon from "/public/assets/checkout/icon-order-confirmation.sv
 import CashDeliveryIcon from "/public/assets/checkout/icon-cash-on-delivery.svg";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import useStore from "@/lib/store";
 import formSchema from "./checkout-form-schema";
 import { Loader2 } from "lucide-react";
+import useCartItems from "@/lib/useCartItems";
+import { CartItem as CartItemModel } from "@prisma/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteRemoveAllCartItems } from "@/lib/fetchers";
 
 function SectionHeader({ children }: { children: React.ReactNode }) {
   return (
@@ -56,13 +59,15 @@ const SHIPPING_FEE = 50;
 const VAT = 0.2;
 
 export default function Checkout() {
-  const { cartItems, removeAllProducts } = useStore();
+  const queryClient = useQueryClient();
+  const { cartId, data, isLoading, isFetching, isRefetching } = useCartItems();
   const router = useRouter();
-  const [isLoaded, setIsLoaded] = React.useState(false);
+  const cartItems: CartItemModel[] = data || [];
   const [isOrderPending, setIsOrderPending] = React.useState(false);
   const [accordion, setAccordion] = React.useState("one");
   const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
     React.useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -82,6 +87,28 @@ export default function Checkout() {
   const currentPaymentMethod = form.watch("paymentMethod");
   const errors = form.formState.errors;
 
+  const removeProductsMutation = useMutation({
+    mutationFn: () => deleteRemoveAllCartItems(cartId),
+    onMutate: () => setIsOrderPending(true),
+    onSuccess: async (_) => {
+      console.log("Success");
+      await queryClient.refetchQueries({
+        queryKey: ["cart", cartId],
+      });
+      setIsConfirmationDialogOpen(true);
+      setIsOrderPending(false);
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data;
+      console.log({ errorMessage });
+      setIsOrderPending(false);
+      // toast({
+      //   title: "Something went wrong!",
+      //   description: `Error: ${errorMessage}`,
+      // });
+    },
+  });
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOrderPending(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -96,35 +123,32 @@ export default function Checkout() {
   function closeConfirmationDialog() {
     if (isConfirmationDialogOpen) {
       setIsConfirmationDialogOpen(false);
+      removeProductsMutation.mutateAsync();
       router.push("/");
-      removeAllProducts();
     }
   }
 
-  // Clear errors when switching payment methods
   React.useEffect(() => {
     if (currentPaymentMethod === "cash") {
       form.clearErrors(["emoneyNumber", "pin"]);
     }
   }, [form.formState.isSubmitted, currentPaymentMethod, form]);
 
-  // For fixing zustand hydration issue
-  React.useEffect(() => {
-    setIsLoaded(true);
-  }, [cartItems]);
-
-  if (!isLoaded)
-    return (
-      <div>
-        <Loader2 className="animate-spin h-8 w-8" />
-      </div>
-    );
-  if (!cartItems?.length) return null;
-
-  if (!cartItems.length) {
+  if (!cartItems?.length) {
+    console.log("No cart items");
     if (typeof window !== "undefined") {
       router.push("/");
     }
+  }
+
+  // Clear errors when switching payment methods
+
+  if (isLoading || isFetching || isRefetching) {
+    return (
+      <div>
+        <Loader2 className="animate-spin h-12 w-12" />
+      </div>
+    );
   }
 
   const cartTotal = cartItems.reduce((a, b) => a + b.price * b.quantity, 0);

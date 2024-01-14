@@ -2,9 +2,11 @@
 
 import * as React from "react";
 import Image from "next/image";
-import CounterButton from "./counter-button";
-import useStore from "@/lib/store";
+import CounterButton from "../counter-button";
 import { cn, truncateProductName } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useCartItems from "@/lib/useCartItems";
+import { postUpdateCartItemQuantity } from "@/lib/fetchers";
 
 interface CartItemProps {
   id: number;
@@ -23,25 +25,36 @@ export default function CartItem({
   image,
   variant,
 }: CartItemProps) {
-  const [isLoaded, setIsLoaded] = React.useState(false);
-  const { incrementAmount, decrementAmount, removeProductFromCart } =
-    useStore();
+  const queryClient = useQueryClient();
+  const { cartId } = useCartItems();
 
-  function handleDecrement() {
-    if (quantity > 1) {
-      decrementAmount(id);
-    } else {
-      removeProductFromCart(id);
-    }
-  }
+  const updateCartItemMutation = useMutation({
+    mutationFn: (action: "increment" | "decrement") => {
+      const newQuantity = action === "increment" ? quantity + 1 : quantity - 1;
+      return postUpdateCartItemQuantity(cartId, {
+        id,
+        name,
+        quantity: newQuantity,
+        price,
+        image,
+        cartId: parseInt(cartId),
+      });
+    },
 
-  React.useEffect(() => {
-    setIsLoaded(true);
-  }, [incrementAmount, decrementAmount, removeProductFromCart]);
-
-  if (!isLoaded) {
-    return null;
-  }
+    onSuccess: async (_) => {
+      await queryClient.refetchQueries({
+        queryKey: ["cart", cartId],
+      });
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data;
+      console.log({ errorMessage });
+      // toast({
+      //   title: "Something went wrong!",
+      //   description: `Error: ${errorMessage}`,
+      // });
+    },
+  });
 
   return (
     <div
@@ -73,8 +86,8 @@ export default function CartItem({
         <CounterButton
           variant="cart"
           className="w-[96px]"
-          onIncrement={() => incrementAmount(id)}
-          onDecrement={handleDecrement}
+          onIncrement={() => updateCartItemMutation.mutate("increment")}
+          onDecrement={() => updateCartItemMutation.mutate("decrement")}
           value={quantity}
         />
       )}
