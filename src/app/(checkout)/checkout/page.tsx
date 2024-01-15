@@ -128,6 +128,7 @@ export default function Checkout() {
     }
   }
 
+  // Clear errors when switching payment methods
   React.useEffect(() => {
     if (currentPaymentMethod === "cash") {
       form.clearErrors(["emoneyNumber", "pin"]);
@@ -140,8 +141,6 @@ export default function Checkout() {
       router.push("/");
     }
   }
-
-  // Clear errors when switching payment methods
 
   if (isLoading || isFetching || isRefetching) {
     return (
