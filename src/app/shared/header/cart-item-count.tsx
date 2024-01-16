@@ -10,7 +10,7 @@ export default function CartItemCount() {
   if (!cartItems.length) return null;
 
   return (
-    <div className="rounded-full absolute top-0 right-0 bg-white text-black h-4 w-4 text-xs">
+    <div className="rounded-full absolute top-0 right-0 bg-raw-sienna text-white h-4 w-4 text-xs">
       {cartItems.length}
     </div>
   );

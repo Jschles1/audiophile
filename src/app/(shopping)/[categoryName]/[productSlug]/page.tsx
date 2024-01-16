@@ -10,6 +10,7 @@ export default async function ProductDetailPage({
 }: {
   params: { categoryName: string; productSlug: string };
 }) {
+  console.log("Server");
   const { productSlug, categoryName } = params;
   const productData = await getProductDetail(productSlug);
 
