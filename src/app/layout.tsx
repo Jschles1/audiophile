@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import QueryProviders from "./query-providers";
 import { CookiesProvider } from "next-client-cookies/server";
 import Header from "./shared/header/header";
@@ -27,6 +28,7 @@ export default function RootLayout({
               <Header />
               <main className="flex flex-col items-center justify-start">
                 {children}
+                <Analytics />
               </main>
               <Footer />
             </div>
