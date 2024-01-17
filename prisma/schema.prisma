@@ -28,6 +28,7 @@ model Product {
   description    String
   features       String
   imageGallery   Json
+  quantityInStock Int
   ProductAddOn   ProductAddOn[]
   RelatedProduct RelatedProduct[]
   Category       Category[]       @relation("CategoryToProduct")
