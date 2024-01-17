@@ -1,6 +1,6 @@
 import prismadb from "@/lib/prisma-db";
 
-export default async function getCategoryProducts(categoryName: string) {
+export default async function getCategoryProductsFromDb(categoryName: string) {
   try {
     const data = await prismadb.category.findFirst({
       where: {

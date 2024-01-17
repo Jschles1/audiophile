@@ -1,9 +1,11 @@
-import getCartItems from "@/lib/server/getCartItems";
-import addCartItem from "@/lib/server/addCartItem";
-import updateCartItemQuantity from "@/lib/server/updateCartItemQuantity";
 import { NextRequest, NextResponse } from "next/server";
 import { CartItem } from "@prisma/client";
-import removeAllCartItems from "@/lib/server/removeAllCartItems";
+import {
+  removeAllCartItems,
+  getCartItems,
+  addCartItem,
+  updateCartItemQuantity,
+} from "@/api";
 
 export async function GET(
   req: NextRequest,

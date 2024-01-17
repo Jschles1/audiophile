@@ -2,7 +2,7 @@ import prismadb from "@/lib/prisma-db";
 import { CartItem } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-export default async function updateCartItemQuantity(
+export default async function updateCartItemQuantityInDb(
   cartId: string,
   cartItem: CartItem
 ) {

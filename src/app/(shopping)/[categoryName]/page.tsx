@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import getCategoryProducts from "@/lib/server/getCategoryProducts";
+import { getCategoryProducts } from "@/api";
 import AboutAudiofile from "../about-audiofile";
 import Categories from "../categories";
 import CategoryHeader from "./category-header";

@@ -1,4 +1,4 @@
-import getProductDetail from "@/lib/server/getProductDetail";
+import { getProductDetail } from "@/api";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(

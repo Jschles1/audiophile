@@ -1,6 +1,6 @@
 import prismadb from "@/lib/prisma-db";
 
-export default async function getCartItems(cartId: string) {
+export default async function getCartItemsFromDb(cartId: string) {
   if (!cartId) return [];
   try {
     const cart = await prismadb.cart.findFirst({

@@ -2,7 +2,10 @@ import prismadb from "@/lib/prisma-db";
 import { Cart, CartItem } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-export default async function addCartItem(cartId: string, cartItem: CartItem) {
+export default async function addCartItemToDb(
+  cartId: string,
+  cartItem: CartItem
+) {
   try {
     let cart;
     if (!cartId || cartId === "new") {

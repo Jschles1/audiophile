@@ -1,7 +1,7 @@
 import prismadb from "@/lib/prisma-db";
 import { NextResponse } from "next/server";
 
-export default async function removeAllCartItems(cartId: string) {
+export default async function removeAllCartItemsFromCartInDb(cartId: string) {
   try {
     let cart;
     if (!cartId) {

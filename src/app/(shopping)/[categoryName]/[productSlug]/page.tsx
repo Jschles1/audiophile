@@ -2,7 +2,7 @@ import GoBack from "@/app/shared/go-back";
 import AboutAudiofile from "../../about-audiofile";
 import Categories from "../../categories";
 import ProductDetails from "./product-details";
-import getProductDetail from "@/lib/server/getProductDetail";
+import { getProductDetail } from "@/api";
 import { notFound } from "next/navigation";
 
 export default async function ProductDetailPage({

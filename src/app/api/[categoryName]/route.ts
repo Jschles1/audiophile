@@ -1,4 +1,4 @@
-import getCategoryProducts from "@/lib/server/getCategoryProducts";
+import { getCategoryProducts } from "@/api";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
