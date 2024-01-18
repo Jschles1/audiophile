@@ -6,6 +6,12 @@ export default async function updateCartItemQuantityInDb(
   cartId: string,
   cartItem: CartItem
 ) {
+  if (!cartItem) {
+    return new NextResponse("No cart item provided", { status: 400 });
+  }
+  if (cartItem.quantityInStock === 0) {
+    return new NextResponse("Item is out of stock", { status: 400 });
+  }
   try {
     let cart;
     if (!cartId) {

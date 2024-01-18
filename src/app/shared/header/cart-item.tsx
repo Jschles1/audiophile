@@ -15,6 +15,7 @@ interface CartItemProps {
   quantity: number;
   price: number;
   image: string;
+  quantityInStock: number;
   variant: "checkout" | "cart";
 }
 
@@ -24,6 +25,7 @@ export default function CartItem({
   quantity,
   price,
   image,
+  quantityInStock,
   variant,
 }: CartItemProps) {
   const queryClient = useQueryClient();
@@ -39,6 +41,7 @@ export default function CartItem({
         quantity: newQuantity,
         price,
         image,
+        quantityInStock,
         cartId: parseInt(cartId),
       });
     },

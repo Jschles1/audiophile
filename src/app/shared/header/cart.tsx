@@ -64,6 +64,7 @@ const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
               quantity={item.quantity}
               price={item.price}
               image={item.image}
+              quantityInStock={item.quantityInStock}
             />
           ))
         ) : (

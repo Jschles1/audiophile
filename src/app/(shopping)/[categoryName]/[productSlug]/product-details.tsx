@@ -130,6 +130,9 @@ export default function ProductDetails({
   const [isProductAdded, setIsProductAdded] = React.useState<boolean>(false);
   const gallery = JSON.parse(data.imageGallery);
   const isNew = data.new;
+  const isInStock = data.quantityInStock;
+
+  console.log({ isInStock });
 
   const addToCartMutation = useMutation({
     mutationFn: (cartItem: CartItemModel) => postAddCartItem(cartId, cartItem),
@@ -182,6 +185,7 @@ export default function ProductDetails({
       quantity: addedProducts,
       price: data.price as number,
       image: data.mobileImage as string,
+      quantityInStock: data.quantityInStock as number,
       cartId: parseInt(cartId),
     };
     const existingProduct = cartItems.find(
@@ -237,63 +241,74 @@ export default function ProductDetails({
             {data.price.toLocaleString()}
           </p>
           <div className="flex items-center gap-x-4">
-            <CounterButton
-              variant="pdp"
-              onIncrement={() => setAddedProducts((prev) => prev + 1)}
-              onDecrement={() => setAddedProducts((prev) => prev - 1)}
-              value={addedProducts}
-            />
-            <Dialog
-              open={isProductAdded}
-              onOpenChange={closeConfirmationDialog}
-            >
-              <DialogTrigger asChild>
-                <Button
-                  variant="default"
-                  className="min-w-[157px]"
-                  disabled={addedProducts === 0 || isAddToCartLoading}
-                  onClick={handleAddToCart}
+            {isInStock ? (
+              <>
+                <CounterButton
+                  variant="pdp"
+                  onIncrement={() => setAddedProducts((prev) => prev + 1)}
+                  onDecrement={() => setAddedProducts((prev) => prev - 1)}
+                  value={addedProducts}
+                />
+                <Dialog
+                  open={isProductAdded}
+                  onOpenChange={closeConfirmationDialog}
                 >
-                  {isAddToCartLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    "Add to Cart"
-                  )}
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <Image src={ConfirmationIcon} alt="" />
-                  <DialogTitle>Added to Your Cart</DialogTitle>
-                  <DialogDescription>
-                    <div className="rounded-lg bg-seashell p-6">
-                      <CartItem
-                        id={data.id}
-                        name={data.name}
-                        quantity={addedProducts}
-                        price={data.price}
-                        image={data.mobileImage}
-                        variant="checkout"
-                      />
-                    </div>
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogFooter className="flex flex-col">
-                  <DialogClose asChild>
-                    <Button variant="black" className="w-full">
-                      Continue Shopping
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="default"
+                      className="min-w-[157px]"
+                      disabled={addedProducts === 0 || isAddToCartLoading}
+                      onClick={handleAddToCart}
+                    >
+                      {isAddToCartLoading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        "Add to Cart"
+                      )}
                     </Button>
-                  </DialogClose>
-                  <DialogClose asChild>
-                    <Link href="/checkout">
-                      <Button variant="default" className="w-full">
-                        Checkout
-                      </Button>
-                    </Link>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <Image src={ConfirmationIcon} alt="" />
+                      <DialogTitle>Added to Your Cart</DialogTitle>
+                      <DialogDescription>
+                        <div className="rounded-lg bg-seashell p-6">
+                          <CartItem
+                            id={data.id}
+                            name={data.name}
+                            quantity={addedProducts}
+                            price={data.price}
+                            image={data.mobileImage}
+                            quantityInStock={data.quantityInStock}
+                            variant="checkout"
+                          />
+                        </div>
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="flex flex-col">
+                      <DialogClose asChild>
+                        <Button variant="black" className="w-full">
+                          Continue Shopping
+                        </Button>
+                      </DialogClose>
+                      <DialogClose asChild>
+                        <Link href="/checkout">
+                          <Button variant="default" className="w-full">
+                            Checkout
+                          </Button>
+                        </Link>
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </>
+            ) : (
+              <>
+                <Button variant="default" className="min-w-[157px]" disabled>
+                  Out of Stock
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>

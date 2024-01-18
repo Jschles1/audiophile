@@ -1,11 +1,17 @@
 import prismadb from "@/lib/prisma-db";
-import { Cart, CartItem } from "@prisma/client";
+import { CartItem } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export default async function addCartItemToDb(
   cartId: string,
   cartItem: CartItem
 ) {
+  if (!cartItem) {
+    return new NextResponse("No cart item provided", { status: 400 });
+  }
+  if (cartItem.quantityInStock === 0) {
+    return new NextResponse("Item is out of stock", { status: 400 });
+  }
   try {
     let cart;
     if (!cartId || cartId === "new") {
@@ -53,6 +59,7 @@ export default async function addCartItemToDb(
               name: cartItem.name,
               price: cartItem.price,
               quantity: cartItem.quantity,
+              quantityInStock: cartItem.quantityInStock,
             },
           },
         },

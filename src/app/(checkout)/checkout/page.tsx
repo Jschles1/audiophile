@@ -455,6 +455,7 @@ export default function Checkout() {
                     quantity={item.quantity}
                     price={item.price}
                     image={item.image}
+                    quantityInStock={item.quantityInStock}
                   />
                 ))}
               </div>
@@ -527,6 +528,7 @@ export default function Checkout() {
                               quantity={cartItems[0].quantity}
                               price={cartItems[0].price}
                               image={cartItems[0].image}
+                              quantityInStock={cartItems[0].quantityInStock}
                               variant="checkout"
                             />
                           ) : (
@@ -546,6 +548,9 @@ export default function Checkout() {
                                         quantity={cartItems[0].quantity}
                                         price={cartItems[0].price}
                                         image={cartItems[0].image}
+                                        quantityInStock={
+                                          cartItems[0].quantityInStock
+                                        }
                                         variant="checkout"
                                       />
                                       {accordion !== "one" && (
@@ -567,6 +572,7 @@ export default function Checkout() {
                                         quantity={item.quantity}
                                         price={item.price}
                                         image={item.image}
+                                        quantityInStock={item.quantityInStock}
                                         variant="checkout"
                                       />
                                     ))}
