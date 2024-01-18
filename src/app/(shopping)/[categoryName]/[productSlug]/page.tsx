@@ -1,4 +1,3 @@
-import { unstable_noStore } from "next/cache";
 import GoBack from "@/app/shared/go-back";
 import AboutAudiofile from "../../about-audiofile";
 import Categories from "../../categories";
@@ -11,7 +10,6 @@ export default async function ProductDetailPage({
 }: {
   params: { categoryName: string; productSlug: string };
 }) {
-  unstable_noStore();
   const { productSlug, categoryName } = params;
   const productData = await getProductDetail(productSlug);
 
