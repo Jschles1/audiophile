@@ -132,8 +132,6 @@ export default function ProductDetails({
   const isNew = data.new;
   const isInStock = data.quantityInStock;
 
-  console.log({ isInStock });
-
   const addToCartMutation = useMutation({
     mutationFn: (cartItem: CartItemModel) => postAddCartItem(cartId, cartItem),
     onSuccess: async (data) => {
