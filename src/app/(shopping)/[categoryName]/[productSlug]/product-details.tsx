@@ -34,6 +34,7 @@ import {
 import ProductDetailsSkeletons from "./product-details-skeletons";
 import useCartItems from "@/lib/useCartItems";
 import { useCookies } from "next-client-cookies";
+import { useToast } from "@/components/ui/use-toast";
 
 function ProductFeature({
   name,
@@ -109,6 +110,7 @@ export default function ProductDetails({
   productSlug,
 }: ProductDetailsProps) {
   const cookies = useCookies();
+  const { toast } = useToast();
   const queryClient = useQueryClient();
   const { data: cartData, cartId } = useCartItems();
   const cartItems: CartItemModel[] = cartData || [];
@@ -132,7 +134,6 @@ export default function ProductDetails({
   const addToCartMutation = useMutation({
     mutationFn: (cartItem: CartItemModel) => postAddCartItem(cartId, cartItem),
     onSuccess: async (data) => {
-      console.log({ data });
       if (!cookies.get("cartId")) {
         cookies.set("cartId", data.cartId, { path: "/" });
       }
@@ -143,13 +144,12 @@ export default function ProductDetails({
       setIsProductAdded(true);
     },
     onError: (error: any) => {
-      const errorMessage = error?.response?.data;
-      console.log({ errorMessage });
       setIsAddToCartLoading(false);
-      // toast({
-      //   title: "Something went wrong!",
-      //   description: `Error: ${errorMessage}`,
-      // });
+      toast({
+        title: "Something went wrong!",
+        description: error?.message,
+        variant: "destructive",
+      });
     },
   });
 
@@ -164,13 +164,12 @@ export default function ProductDetails({
       setIsProductAdded(true);
     },
     onError: (error: any) => {
-      const errorMessage = error?.response?.data;
-      console.log({ errorMessage });
       setIsAddToCartLoading(false);
-      // toast({
-      //   title: "Something went wrong!",
-      //   description: `Error: ${errorMessage}`,
-      // });
+      toast({
+        title: "Something went wrong!",
+        description: error?.message,
+        variant: "destructive",
+      });
     },
   });
 

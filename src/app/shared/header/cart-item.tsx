@@ -7,6 +7,7 @@ import { cn, truncateProductName } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useCartItems from "@/lib/useCartItems";
 import { postUpdateCartItemQuantity } from "@/lib/fetchers";
+import { useToast } from "@/components/ui/use-toast";
 
 interface CartItemProps {
   id: number;
@@ -27,6 +28,7 @@ export default function CartItem({
 }: CartItemProps) {
   const queryClient = useQueryClient();
   const { cartId } = useCartItems();
+  const { toast } = useToast();
 
   const updateCartItemMutation = useMutation({
     mutationFn: (action: "increment" | "decrement") => {
@@ -47,12 +49,11 @@ export default function CartItem({
       });
     },
     onError: (error: any) => {
-      const errorMessage = error?.response?.data;
-      console.log({ errorMessage });
-      // toast({
-      //   title: "Something went wrong!",
-      //   description: `Error: ${errorMessage}`,
-      // });
+      toast({
+        title: "Something went wrong!",
+        description: error?.message,
+        variant: "destructive",
+      });
     },
   });
 

@@ -27,7 +27,6 @@ export async function POST(
   try {
     const body = (await req.json()) as CartItem;
     const cart = await addCartItem(params.cartId, body);
-
     return cart;
   } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });

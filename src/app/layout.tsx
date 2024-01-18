@@ -5,6 +5,7 @@ import QueryProviders from "./query-providers";
 import { CookiesProvider } from "next-client-cookies/server";
 import Header from "./shared/header/header";
 import Footer from "./shared/footer";
+import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
 const manrope = Manrope({ subsets: ["latin"] });
@@ -31,6 +32,7 @@ export default function RootLayout({
                 <Analytics />
               </main>
               <Footer />
+              <Toaster />
             </div>
           </QueryProviders>
         </CookiesProvider>

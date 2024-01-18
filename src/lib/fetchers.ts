@@ -1,6 +1,12 @@
 import axios from "axios";
 import { CartItem } from "@prisma/client";
 
+function handleAxiosError(error: any, route: string) {
+  if (axios.isAxiosError(error)) {
+    throw new Error(`Error fetching from ${route}: ${error.response?.data}`);
+  }
+}
+
 async function fetchResource(route: string) {
   try {
     const response = await axios.get(route);
@@ -9,7 +15,7 @@ async function fetchResource(route: string) {
     }
     return response.data;
   } catch (error: any) {
-    throw new Error(`Error fetching from ${route}: `, error);
+    handleAxiosError(error, route);
   }
 }
 
@@ -21,7 +27,7 @@ async function postResource<T>(route: string, data: T) {
     }
     return response.data;
   } catch (error: any) {
-    throw new Error(`Error fetching from ${route}: `, error);
+    handleAxiosError(error, route);
   }
 }
 
@@ -33,7 +39,7 @@ async function patchResource<T>(route: string, data: T) {
     }
     return response.data;
   } catch (error: any) {
-    throw new Error(`Error fetching from ${route}: `, error);
+    handleAxiosError(error, route);
   }
 }
 
@@ -45,7 +51,7 @@ async function deleteResource(route: string) {
     }
     return response.data;
   } catch (error: any) {
-    throw new Error(`Error fetching from ${route}: `, error);
+    handleAxiosError(error, route);
   }
 }
 

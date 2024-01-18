@@ -46,6 +46,7 @@ import useCartItems from "@/lib/useCartItems";
 import { CartItem as CartItemModel } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteRemoveAllCartItems } from "@/lib/fetchers";
+import { useToast } from "@/components/ui/use-toast";
 
 function SectionHeader({ children }: { children: React.ReactNode }) {
   return (
@@ -60,6 +61,7 @@ const VAT = 0.2;
 
 export default function Checkout() {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   const { cartId, data, isLoading, isFetching, isRefetching } = useCartItems();
   const router = useRouter();
   const cartItems: CartItemModel[] = data || [];
@@ -91,7 +93,6 @@ export default function Checkout() {
     mutationFn: () => deleteRemoveAllCartItems(cartId),
     onMutate: () => setIsOrderPending(true),
     onSuccess: async (_) => {
-      console.log("Success");
       await queryClient.refetchQueries({
         queryKey: ["cart", cartId],
       });
@@ -99,13 +100,12 @@ export default function Checkout() {
       setIsOrderPending(false);
     },
     onError: (error: any) => {
-      const errorMessage = error?.response?.data;
-      console.log({ errorMessage });
       setIsOrderPending(false);
-      // toast({
-      //   title: "Something went wrong!",
-      //   description: `Error: ${errorMessage}`,
-      // });
+      toast({
+        title: "Something went wrong!",
+        description: error?.message,
+        variant: "destructive",
+      });
     },
   });
 
@@ -136,7 +136,6 @@ export default function Checkout() {
   }, [form.formState.isSubmitted, currentPaymentMethod, form]);
 
   if (!cartItems?.length) {
-    console.log("No cart items");
     if (typeof window !== "undefined") {
       router.push("/");
     }

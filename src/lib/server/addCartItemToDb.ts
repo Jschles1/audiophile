@@ -27,7 +27,7 @@ export default async function addCartItemToDb(
     }
 
     if (!cart) {
-      throw new Error("cartId not found");
+      return new NextResponse("cartId not found", { status: 404 });
     }
 
     const existingItem = cart.items.find((item) => item.id === cartItem.id);

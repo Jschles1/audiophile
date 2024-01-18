@@ -6,12 +6,12 @@ import CartItem from "./cart-item";
 import { Button } from "@/components/ui/button";
 import useCartItems from "@/lib/useCartItems";
 import { CartItem as CartItemModel } from "@prisma/client";
-import { useCookies } from "next-client-cookies";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteRemoveAllCartItems } from "@/lib/fetchers";
+import { useToast } from "@/components/ui/use-toast";
 
 const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
-  const cookies = useCookies();
+  const { toast } = useToast();
   const { data, cartId } = useCartItems();
   const queryClient = useQueryClient();
   const cartItems: CartItemModel[] = data || [];
@@ -28,11 +28,11 @@ const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
       });
     },
     onError: (error: any) => {
-      const errorMessage = error?.response?.data;
-      // toast({
-      //   title: "Something went wrong!",
-      //   description: `Error: ${errorMessage}`,
-      // });
+      toast({
+        title: "Something went wrong!",
+        description: error?.message,
+        variant: "destructive",
+      });
     },
   });
 
