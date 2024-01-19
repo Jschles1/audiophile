@@ -59,14 +59,14 @@ model Cart {
 }
 
 model CartItem {
-  id       Int    @id @default(autoincrement())
-  name     String
-  price    Int
-  image    String
-  quantity Int
-  cartId   Int
+  id              Int    @id @default(autoincrement())
+  name            String
+  price           Int
+  image           String
+  quantity        Int
+  cartId          Int
   quantityInStock Int
-  Cart     Cart   @relation(fields: [cartId], references: [id])
+  Cart            Cart   @relation(fields: [cartId], references: [id])
 }
 
 model User {
@@ -80,6 +80,7 @@ model User {
 
 model Order {
   id        Int      @id @default(autoincrement())
+  invoiceId String
   items     Json
   total     Int
   createdAt DateTime @default(now())
