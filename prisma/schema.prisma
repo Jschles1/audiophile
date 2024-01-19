@@ -85,6 +85,6 @@ model Order {
   total     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User     @relation(fields: [userId], references: [id])
-  userId    Int
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
 }
