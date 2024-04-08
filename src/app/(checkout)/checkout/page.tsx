@@ -338,6 +338,7 @@ export default function Checkout() {
                         <RadioGroupItem
                           value="emoney"
                           id="emoney"
+                          aria-label="e-Money"
                           onClick={() => handlePaymentMethodChange("emoney")}
                         />
                         <Label
@@ -357,6 +358,7 @@ export default function Checkout() {
                         <RadioGroupItem
                           value="cash"
                           id="cash"
+                          aria-label="Cash on Delivery"
                           onClick={() => handlePaymentMethodChange("cash")}
                         />
                         <Label

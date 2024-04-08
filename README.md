@@ -130,8 +130,6 @@ In the live site, each category page and product detail page will dynamically fe
 
 Some items I plan to continue development on post-MVP:
 - Fine tune accessibility best practices.
-- Add quantity_in_stock field to Products table. Each order placed removes number of ordered products from quantity_in_stock. Products with 0 quantity_in_stock will be considered "Out of Stock" and not be able to be added to cart.
-- Add cron job that runs weekly, resetting the quantity_in_stock for each product.
 - Add support for user login with a Users table.
 - Add an Orders table and give users the ability to look at past orders.
 - Potential CMS integration for changing home page content.
