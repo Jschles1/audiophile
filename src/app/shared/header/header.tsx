@@ -38,7 +38,8 @@ export default function Header() {
     setIsMenuOpen(newValue);
     setIsCartOpen(false);
     if (newValue) {
-      document.addEventListener("click", closeMenuDialog);
+      // document.addEventListener("click", closeMenuDialog);
+      setTimeout(() => document.addEventListener("click", closeMenuDialog), 0);
     }
   }
 
@@ -47,7 +48,7 @@ export default function Header() {
     setIsCartOpen(newValue);
     setIsMenuOpen(false);
     if (newValue) {
-      document.addEventListener("click", closeCartDialog);
+      setTimeout(() => document.addEventListener("click", closeMenuDialog), 0);
     }
   }
 
@@ -82,6 +83,7 @@ export default function Header() {
 
   return (
     <header
+      data-testid="header"
       className={cn(
         "bg-black text-white border-b border-white border-opacity-50 md:border-none z-10",
         isHome && "bg-soft-black"
@@ -98,7 +100,7 @@ export default function Header() {
             <Image src={HamburgerMenuIcon} alt="Menu" />
           </Button>
           <Link href="/" className="block md:mr-[30rem] lg:mr-0">
-            <Image src={AudiophileLogo} alt="Audiophile logo" />
+            <Image src={AudiophileLogo} alt="Audiophile Logo" />
           </Link>
           <div className="hidden lg:flex lg:items-center lg:gap-x-8">
             <HeaderLink href="/">Home</HeaderLink>
@@ -119,6 +121,7 @@ export default function Header() {
 
         {isMenuOpen && (
           <div
+            data-testid="menu-container"
             className="absolute top-[105px] bg-white w-full py-8 pb-6 rounded-b-lg z-60"
             ref={menuRef}
           >

@@ -38,6 +38,7 @@ const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
 
   return (
     <div
+      data-testid="cart"
       ref={ref}
       className="absolute top-[calc(105px+1.5rem)] bg-white w-[calc(100%-3rem)] py-8 px-7 rounded-lg z-60 mx-auto left-0 right-0 md:w-[377px] md:left-auto md:right-6"
     >
