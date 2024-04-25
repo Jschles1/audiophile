@@ -1,6 +1,7 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import { screen } from "@testing-library/react";
 import Footer from "../../../src/app/shared/footer";
+import { render } from "../../../vitest.setup";
 
 describe("<Footer />", () => {
   it("Renders without crashing", () => {
