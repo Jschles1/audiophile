@@ -29,6 +29,6 @@ export default async function removeAllCartItemsFromCartInDb(cartId: string) {
 
     return NextResponse.json({ success: true, cartId: cart.id });
   } catch (error: any) {
-    throw new Error("Error removing cart items: ", error);
+    throw new Error(`Error removing cart items: ${error.message}`);
   }
 }
