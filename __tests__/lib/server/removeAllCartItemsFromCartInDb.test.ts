@@ -14,12 +14,6 @@ vi.mock("@/lib/prisma-db", () => ({
   },
 }));
 
-// vi.mock("next/server", () => ({
-//   NextResponse: {
-//     json: vi.fn((data) => ({ ...data, status: 200 })),
-//   },
-// }));
-
 describe("removeAllCartItemsFromCartInDb", () => {
   afterEach(() => {
     // Reset all mocks after each test
