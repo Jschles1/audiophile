@@ -56,6 +56,6 @@ export default async function updateCartItemQuantityInDb(
       throw new Error("Cannot update quantity of non-existent cart item");
     }
   } catch (error: any) {
-    throw new Error("Error adding product to cart: ", error);
+    throw new Error("Error adding product to cart: " + error.message);
   }
 }
