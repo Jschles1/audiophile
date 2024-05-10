@@ -8,6 +8,26 @@ vi.mock("next/image", () => ({
   default: vi.fn((props) => <img {...props} />),
 }));
 
+vi.mock("next/navigation", () => ({
+  useRouter() {
+    return {
+      prefetch: () => null,
+      push: (path: string) => null,
+      replace: () => null,
+      back: () => null,
+      forward: () => null,
+    };
+  },
+}));
+
+const ResizeObserverMock = vi.fn(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}));
+
+vi.stubGlobal("ResizeObserver", ResizeObserverMock);
+
 function render(ui: React.ReactElement, { ...options } = {}) {
   const queryClient = new QueryClient({
     defaultOptions: {
