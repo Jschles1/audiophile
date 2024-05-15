@@ -153,7 +153,5 @@ describe("Checkout Component", () => {
     });
 
     expect(screen.getByText("Invalid Email")).toBeInTheDocument();
-
-    screen.debug(document.body, 100000);
   });
 });
