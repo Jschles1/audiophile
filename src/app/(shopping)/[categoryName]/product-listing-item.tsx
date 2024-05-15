@@ -23,6 +23,7 @@ export default function ProductListingItem({
   const isEvenIndex = index === 0 || index % 2 == 0;
   return (
     <div
+      data-testid="product-container"
       className={cn(
         "flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:items-start text-center lg:text-start",
         !isEvenIndex && "lg:flex-row-reverse"
