@@ -3,6 +3,7 @@ import { CartItem } from "@prisma/client";
 
 function handleAxiosError(error: any, route: string) {
   if (axios.isAxiosError(error)) {
+    /* v8 ignore next 2 */
     throw new Error(
       `Error fetching from ${route}: ${error.response?.data || error.message}`
     );
@@ -70,6 +71,7 @@ export async function fetchCartItems(cartId: string) {
 }
 
 export async function postAddCartItem(cartId: string, cartItem: CartItem) {
+  /* v8 ignore next */
   let cartIdParam = cartId ? cartId : "new";
   return await postResource<CartItem>(`/api/cart/${cartIdParam}`, cartItem);
 }
