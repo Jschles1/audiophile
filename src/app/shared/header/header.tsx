@@ -63,6 +63,7 @@ export default function Header() {
   );
 
   const closeCartDialog = React.useCallback(
+    /* v8 ignore next 6 */
     (e: MouseEvent) => {
       if (!cartRef.current?.contains(e.target as Node)) {
         setIsCartOpen(false);

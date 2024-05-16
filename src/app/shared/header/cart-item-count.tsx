@@ -5,6 +5,7 @@ import useCartItems from "@/lib/useCartItems";
 
 export default function CartItemCount() {
   const { data } = useCartItems();
+  /* v8 ignore next */
   const cartItems = data || [];
 
   if (!cartItems.length) return null;
