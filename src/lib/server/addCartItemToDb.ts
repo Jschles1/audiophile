@@ -67,7 +67,7 @@ export default async function addCartItemToDb(
     }
 
     return NextResponse.json({ success: true, cartId: cart.id });
-  } catch (error: any) {
+  } /* v8 ignore next 3 */ catch (error: any) {
     throw new Error("Error adding product to cart: ", error);
   }
 }

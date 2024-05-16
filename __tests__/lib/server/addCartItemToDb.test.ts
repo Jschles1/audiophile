@@ -28,6 +28,22 @@ describe("addCartItemToDb", () => {
     expect(await response.text()).toBe("No cart item provided");
   });
 
+  it("returns 404 if cart not found in database", async () => {
+    (prismadb.cart.findFirst as any).mockResolvedValue(null);
+    const cartItem = {
+      id: 1,
+      name: "Sample Product",
+      price: 100,
+      image: "sample-image.jpg",
+      quantity: 1,
+      cartId: 1,
+      quantityInStock: 1,
+    };
+    const response = await addCartItemToDb("1", cartItem);
+    expect(response.status).toBe(404);
+    expect(await response.text()).toBe("cartId not found");
+  });
+
   it("returns 400 if item is out of stock", async () => {
     const cartItem = {
       id: 1,
