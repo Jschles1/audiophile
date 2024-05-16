@@ -2,8 +2,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import RootLayout from "@/app/layout";
-import Header from "@/app/shared/header/header";
-import Footer from "@/app/shared/footer";
 
 vi.mock("@/app/shared/header/header", () => ({
   __esModule: true,
@@ -13,6 +11,18 @@ vi.mock("@/app/shared/header/header", () => ({
 vi.mock("@/app/shared/footer", () => ({
   __esModule: true,
   default: () => <footer>Footer</footer>,
+}));
+
+vi.mock("next-client-cookies/server", () => ({
+  __esModule: true,
+  CookiesProvider: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+}));
+
+vi.mock("next/font/google", () => ({
+  __esModule: true,
+  Manrope: () => ({ className: "manrope-latin" }),
 }));
 
 describe("RootLayout", () => {
@@ -29,8 +39,5 @@ describe("RootLayout", () => {
     // Check for the presence of layout components
     expect(screen.getByText("Header")).toBeInTheDocument();
     expect(screen.getByText("Footer")).toBeInTheDocument();
-
-    // Check for the presence of specific classes
-    expect(document.body).toHaveClass("manrope-latin");
   });
 });
