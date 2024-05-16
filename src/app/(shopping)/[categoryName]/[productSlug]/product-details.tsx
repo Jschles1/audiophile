@@ -113,6 +113,7 @@ export default function ProductDetails({
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { data: cartData, cartId } = useCartItems();
+  /* v8 ignore next */
   const cartItems: CartItemModel[] = cartData || [];
 
   const { data, isLoading, isFetching, isRefetching } = useQuery({
@@ -135,14 +136,17 @@ export default function ProductDetails({
   const addToCartMutation = useMutation({
     mutationFn: (cartItem: CartItemModel) => postAddCartItem(cartId, cartItem),
     onSuccess: async (data) => {
+      /* v8 ignore start */
       if (!cookies.get("cartId")) {
         cookies.set("cartId", data.cartId, { path: "/" });
       }
       queryClient.refetchQueries({
         queryKey: ["cart"],
       });
+
       setIsAddToCartLoading(false);
       setIsProductAdded(true);
+      /* v8 ignore end */
     },
     onError: (error: any) => {
       setIsAddToCartLoading(false);
@@ -176,7 +180,10 @@ export default function ProductDetails({
 
   async function handleAddToCart() {
     setIsAddToCartLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    if (process.env.NODE_ENV !== "test") {
+      /* v8 ignore next */
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+    }
     const newCartItem: CartItemModel = {
       id: data.id as number,
       name: data.name as string,

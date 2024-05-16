@@ -2,7 +2,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductDetailsSkeletons() {
   return (
-    <div className="px-6 mx-auto max-w-[1110px]">
+    <div
+      className="px-6 mx-auto max-w-[1110px]"
+      data-testid="product-detail-skeletons"
+    >
       <div className="md:flex md:flex-row md:items-center">
         <div className="md:p-0 pb-10">
           <Skeleton className="relative h-[327px] md:h-[490px] md:w-[281px] lg:h-[560px] lg:w-[540px]"></Skeleton>
