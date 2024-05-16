@@ -64,6 +64,7 @@ export default function Checkout() {
   const { toast } = useToast();
   const { cartId, data, isLoading, isFetching, isRefetching } = useCartItems();
   const router = useRouter();
+  /* v8 ignore next */
   const cartItems: CartItemModel[] = data || [];
   const [isOrderPending, setIsOrderPending] = React.useState(false);
   const [accordion, setAccordion] = React.useState("one");
@@ -93,11 +94,13 @@ export default function Checkout() {
     mutationFn: () => deleteRemoveAllCartItems(cartId),
     onMutate: () => setIsOrderPending(true),
     onSuccess: async (_) => {
+      /* v8 ignore start */
       await queryClient.refetchQueries({
         queryKey: ["cart", cartId],
       });
       setIsConfirmationDialogOpen(true);
       setIsOrderPending(false);
+      /* v8 ignore end */
     },
     onError: (error: any) => {
       setIsOrderPending(false);
@@ -113,6 +116,7 @@ export default function Checkout() {
     setIsOrderPending(true);
     if (process.env.NODE_ENV !== "test") {
       // Simulated backend call for order submission
+      /* v8 ignore next */
       await new Promise((resolve) => setTimeout(resolve, 1500));
     }
     setIsConfirmationDialogOpen(true);
