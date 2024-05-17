@@ -23,6 +23,7 @@ export default function ProductList({
     refetchOnMount: false,
   });
 
+  /* v8 ignore next 3 */
   if (isLoading || isFetching || isRefetching) {
     return <ProductListSkeletons />;
   }

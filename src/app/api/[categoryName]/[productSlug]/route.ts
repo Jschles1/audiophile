@@ -9,7 +9,7 @@ export async function GET(
     const product = await getProductDetail(params.productSlug);
 
     return NextResponse.json(product);
-  } catch (error) {
+  } /* v8 ignore next 2 */ catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

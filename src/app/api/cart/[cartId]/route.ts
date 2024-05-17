@@ -15,7 +15,7 @@ export async function GET(
     const cartItems = await getCartItems(params.cartId);
 
     return NextResponse.json(cartItems);
-  } catch (error) {
+  } /* v8 ignore next 2 */ catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -28,7 +28,7 @@ export async function POST(
     const body = (await req.json()) as CartItem;
     const cart = await addCartItem(params.cartId, body);
     return cart;
-  } catch (error) {
+  } /* v8 ignore next 2 */ catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -42,7 +42,7 @@ export async function PATCH(
     const cart = await updateCartItemQuantity(params.cartId, body);
 
     return NextResponse.json(cart);
-  } catch (error) {
+  } /* v8 ignore next 2 */ catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -55,7 +55,7 @@ export async function DELETE(
     const result = await removeAllCartItems(params.cartId);
 
     return result;
-  } catch (error) {
+  } /* v8 ignore next 2 */ catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
