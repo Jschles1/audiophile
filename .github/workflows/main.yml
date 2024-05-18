@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]  # Tests against multiple versions of node
+        node-version: [20.x]  # Tests against multiple versions of node
 
     steps:
     - name: Checkout code
