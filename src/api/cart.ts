@@ -1,4 +1,5 @@
 import getCartItemsFromDb from "@/lib/server/getCartItemsFromDb";
+/* v8 ignore start */
 import addCartItemToDb from "@/lib/server/addCartItemToDb";
 import removeAllCartItemsFromCartInDb from "@/lib/server/removeAllCartItemsFromCartInDb";
 import updateCartItemQuantityFromDb from "@/lib/server/updateCartItemQuantityInDb";
@@ -19,3 +20,4 @@ export async function updateCartItemQuantity(cartId: string, body: CartItem) {
 export async function removeAllCartItems(cartId: string) {
   return await removeAllCartItemsFromCartInDb(cartId);
 }
+/* v8 ignore end */

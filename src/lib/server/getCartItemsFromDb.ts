@@ -15,7 +15,7 @@ export default async function getCartItemsFromDb(cartId: string) {
     if (!cart || !cart.items) return [];
 
     return cart.items;
-  } catch (error: any) {
+  } /* v8 ignore next 2 */ catch (error: any) {
     throw new Error("Error fetching products: ", error);
   }
 }

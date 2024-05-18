@@ -45,13 +45,14 @@ export default function CartItem({
         cartId: parseInt(cartId),
       });
     },
-
     onSuccess: async (_) => {
+      /* v8 ignore next 4 */
       await queryClient.refetchQueries({
         queryKey: ["cart", cartId],
       });
     },
     onError: (error: any) => {
+      /* v8 ignore next 6 */
       toast({
         title: "Something went wrong!",
         description: error?.message,

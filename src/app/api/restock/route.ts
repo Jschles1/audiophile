@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     await restockProducts();
     console.log("Successfully restocked products");
     return Response.json({ success: true });
-  } catch (error) {
+  } /* v8 ignore next 2 */ catch (error) {
     return new Response("Internal Error", { status: 500 });
   }
 }

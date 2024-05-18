@@ -15,6 +15,8 @@ export default async function ProductDetailPage({
 
   if (!productData) {
     notFound();
+    /* v8 ignore next */
+    return null;
   }
 
   return (

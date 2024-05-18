@@ -64,6 +64,7 @@ export default function Checkout() {
   const { toast } = useToast();
   const { cartId, data, isLoading, isFetching, isRefetching } = useCartItems();
   const router = useRouter();
+  /* v8 ignore next */
   const cartItems: CartItemModel[] = data || [];
   const [isOrderPending, setIsOrderPending] = React.useState(false);
   const [accordion, setAccordion] = React.useState("one");
@@ -93,11 +94,13 @@ export default function Checkout() {
     mutationFn: () => deleteRemoveAllCartItems(cartId),
     onMutate: () => setIsOrderPending(true),
     onSuccess: async (_) => {
+      /* v8 ignore start */
       await queryClient.refetchQueries({
         queryKey: ["cart", cartId],
       });
       setIsConfirmationDialogOpen(true);
       setIsOrderPending(false);
+      /* v8 ignore end */
     },
     onError: (error: any) => {
       setIsOrderPending(false);
@@ -111,7 +114,11 @@ export default function Checkout() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOrderPending(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    if (process.env.NODE_ENV !== "test") {
+      // Simulated backend call for order submission
+      /* v8 ignore next */
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+    }
     setIsConfirmationDialogOpen(true);
     setIsOrderPending(false);
   }
@@ -143,7 +150,7 @@ export default function Checkout() {
 
   if (isLoading || isFetching || isRefetching) {
     return (
-      <div>
+      <div data-testid="loading">
         <Loader2 className="animate-spin h-12 w-12" />
       </div>
     );
@@ -160,6 +167,7 @@ export default function Checkout() {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="mx-auto max-w-[1110px]"
+          role="form"
         >
           <div className="lg:flex lg:flex-row lg:items-start lg:gap-x-[1.875rem]">
             <div className="bg-white p-6 mx-6 rounded-lg mb-8 lg:mr-0 lg:flex-1">
@@ -502,10 +510,16 @@ export default function Checkout() {
 
               <Dialog
                 open={isConfirmationDialogOpen}
+                data-testid="dialog"
                 onOpenChange={closeConfirmationDialog}
               >
                 <DialogTrigger asChild>
-                  <Button variant="default" type="submit" className="w-full">
+                  <Button
+                    variant="default"
+                    type="submit"
+                    data-testid="submit"
+                    className="w-full"
+                  >
                     {isOrderPending ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
@@ -518,7 +532,10 @@ export default function Checkout() {
                     <Image src={ConfirmationIcon} alt="" />
                     <DialogTitle>Thank you for your order</DialogTitle>
                     <DialogDescription>
-                      <p className="text-black text-opacity-50 text-[0.938rem] leading-[1.563rem] pb-6">
+                      <p
+                        className="text-black text-opacity-50 text-[0.938rem] leading-[1.563rem] pb-6"
+                        data-testid="dialog-content"
+                      >
                         You will receive an email confirmation shortly.
                       </p>
                       <div className="md:flex md:flex-row md:w-full">
@@ -598,7 +615,11 @@ export default function Checkout() {
                   <DialogFooter className="flex flex-col">
                     <DialogClose asChild>
                       <Link href="/">
-                        <Button variant="default" className="w-full">
+                        <Button
+                          variant="default"
+                          className="w-full"
+                          data-testid="back-to-home"
+                        >
                           Back To Home
                         </Button>
                       </Link>

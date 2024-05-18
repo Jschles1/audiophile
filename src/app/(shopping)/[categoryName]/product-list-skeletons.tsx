@@ -6,7 +6,10 @@ export default function ProductListSkeletons() {
       <div className="lg:flex lg:flex-row lg:items-center">
         <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:items-start text-center lg:text-start">
           <div className="rounded-lg w-full mb-8 lg:mb-0 lg:h-full lg:basis-1/2">
-            <Skeleton className="relative h-[275px] w-[300px] md:w-full mx-auto lg:h-[540px] lg:w-[530px]"></Skeleton>
+            <Skeleton
+              data-testid="skeleton"
+              className="relative h-[275px] w-[300px] md:w-full mx-auto lg:h-[540px] lg:w-[530px]"
+            ></Skeleton>
           </div>
         </div>
         <div className="lg:py-[6.75rem] lg:basis-1/2 lg:pl-[7.813rem]">

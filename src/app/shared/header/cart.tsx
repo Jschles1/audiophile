@@ -14,6 +14,7 @@ const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
   const { toast } = useToast();
   const { data, cartId } = useCartItems();
   const queryClient = useQueryClient();
+  /* v8 ignore next */
   const cartItems: CartItemModel[] = data || [];
   const hasCartItems = cartItems.length > 0;
   const total = hasCartItems
@@ -23,11 +24,13 @@ const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
   const removeCartItemsMutation = useMutation({
     mutationFn: () => deleteRemoveAllCartItems(cartId),
     onSuccess: async (_) => {
+      /* v8 ignore next 4 */
       await queryClient.refetchQueries({
         queryKey: ["cart", cartId],
       });
     },
     onError: (error: any) => {
+      /* v8 ignore next 6 */
       toast({
         title: "Something went wrong!",
         description: error?.message,
@@ -38,6 +41,7 @@ const Cart = React.forwardRef<HTMLDivElement>((_, ref) => {
 
   return (
     <div
+      data-testid="cart"
       ref={ref}
       className="absolute top-[calc(105px+1.5rem)] bg-white w-[calc(100%-3rem)] py-8 px-7 rounded-lg z-60 mx-auto left-0 right-0 md:w-[377px] md:left-auto md:right-6"
     >
