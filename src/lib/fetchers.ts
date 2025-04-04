@@ -4,9 +4,7 @@ import { CartItem } from "@prisma/client";
 function handleAxiosError(error: any, route: string) {
   if (axios.isAxiosError(error)) {
     /* v8 ignore next 2 */
-    throw new Error(
-      `Error fetching from ${route}: ${error.response?.data || error.message}`
-    );
+    throw new Error(`Error fetching from ${route}: ${error.response?.data || error.message}`);
   }
 }
 
@@ -67,6 +65,9 @@ export async function fetchProductDetail(categoryName: string, slug: string) {
 }
 
 export async function fetchCartItems(cartId: string) {
+  if (!cartId) {
+    return [];
+  }
   return await fetchResource(`/api/cart/${cartId}`);
 }
 
@@ -80,9 +81,6 @@ export async function deleteRemoveAllCartItems(cartId: string) {
   return await deleteResource(`/api/cart/${cartId}`);
 }
 
-export async function postUpdateCartItemQuantity(
-  cartId: string,
-  cartItem: CartItem
-) {
+export async function postUpdateCartItemQuantity(cartId: string, cartItem: CartItem) {
   return await patchResource<CartItem>(`/api/cart/${cartId}`, cartItem);
 }

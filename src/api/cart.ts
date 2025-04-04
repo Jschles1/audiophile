@@ -6,6 +6,9 @@ import updateCartItemQuantityFromDb from "@/lib/server/updateCartItemQuantityInD
 import { CartItem } from "@prisma/client";
 
 export async function getCartItems(cartId: string) {
+  if (!cartId) {
+    return [];
+  }
   return await getCartItemsFromDb(cartId);
 }
 
